@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- Header -->
+<!-- Page content -->
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-lg-4 col-sm-6">
+            </div>
+            <div class="col-lg-8 col-sm-6">
+              <div class="mt-4 mt-sm-0 d-flex align-items-center justify-content-sm-end">
+
+                <div class="mb-2 me-2">
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="mdi mdi-plus me-1"></i> Create New
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
+                      <a class="dropdown-item" href="{% url 'file' %}"><i class="mdi mdi-file-outline me-1"></i> File</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h5 class="font-size-16 me-3 mb-0">My Files</h5>
+          <div class="row mt-4">
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="dropdown float-end">
+                      <a class="text-muted dropdown-toggle font-size-16" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true">
+                        <i class="bx bx-dots-vertical-rounded font-size-20"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Remove</a>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar align-self-center me-3">
+                        <div class="avatar-title rounded bg-soft-primary text-primary font-size-24">
+                          <i class="mdi mdi-google-drive"></i>
+                        </div>
+                      </div>
+
+                      <div class="flex-1">
+                        <h5 class="font-size-15 mb-1">Google Drive</h5>
+                        <a href="#" class="font-size-13 text-muted"><u>View Folder</u></a>
+                      </div>
+                    </div>
+                    <div class="mt-3 pt-1">
+                      <div class="d-flex justify-content-between">
+                        <p class="text-muted font-size-13 mb-1">20GB</p>
+                        <p class="text-muted font-size-13 mb-1">50GB used</p>
+                      </div>
+                      <div class="progress animated-progess custom-progress">
+                        <div class="progress-bar bg-gradient bg-primary" role="progressbar" style="width: 90%"
+                          aria-valuenow="90" aria-valuemin="0" aria-valuemax="90">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="dropdown float-end">
+                      <a class="text-muted dropdown-toggle font-size-16" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true">
+                        <i class="bx bx-dots-vertical-rounded font-size-20"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Remove</a>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar align-self-center me-3">
+                        <div class="avatar-title rounded bg-soft-info text-info font-size-24">
+                          <i class="mdi mdi-dropbox"></i>
+                        </div>
+                      </div>
+
+                      <div class="flex-1">
+                        <h5 class="font-size-15 mb-1">Dropbox</h5>
+                        <a href="" class="font-size-13 text-muted"><u>View Folder</u></a>
+                      </div>
+
+                    </div>
+                    <div class="mt-3 pt-1">
+                      <div class="d-flex justify-content-between">
+                        <p class="text-muted font-size-13 mb-1">20GB</p>
+                        <p class="text-muted font-size-13 mb-1">50GB used</p>
+                      </div>
+                      <div class="progress animated-progess custom-progress">
+                        <div class="progress-bar bg-gradient bg-info" role="progressbar" style="width: 90%"
+                          aria-valuenow="90" aria-valuemin="0" aria-valuemax="90">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="dropdown float-end">
+                      <a class="text-muted dropdown-toggle font-size-16" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true">
+                        <i class="bx bx-dots-vertical-rounded font-size-20"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Remove</a>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar align-self-center me-3">
+                        <div class="avatar-title rounded bg-soft-primary text-primary font-size-24">
+                          <i class="mdi mdi-apple-icloud"></i>
+                        </div>
+                      </div>
+
+                      <div class="flex-1">
+                        <h5 class="font-size-15 mb-1">One Drive</h5>
+                        <a href="" class="font-size-13 text-muted"><u>View Folder</u></a>
+                      </div>
+
+                    </div>
+                    <div class="mt-3 pt-1">
+                      <div class="d-flex justify-content-between">
+                        <p class="text-muted font-size-13 mb-1">20GB</p>
+                        <p class="text-muted font-size-13 mb-1">50GB used</p>
+                      </div>
+                      <div class="progress animated-progess custom-progress">
+                        <div class="progress-bar bg-gradient bg-primary" role="progressbar" style="width: 90%"
+                          aria-valuenow="90" aria-valuemin="0" aria-valuemax="90">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+          </div>
+          <!-- end row -->
+
+          <h5 class="font-size-16 me-3 mb-0">Folders</h5>
+          <div class="row mt-4">
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <i class="bx bxs-folder h1 mb-0 text-warning"></i>
+                      </div>
+                      <div class="avatar-group">
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
+                              class="rounded-circle avatar-sm">
+                          </a>
+                        </div>
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt=""
+                              class="rounded-circle avatar-sm">
+                          </a>
+                        </div>
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <div class="avatar-sm">
+                              <span class="avatar-title rounded-circle bg-success text-white font-size-16">
+                                A
+                              </span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                      <div class="overflow-hidden me-auto">
+                        <h5 class="font-size-15 text-truncate mb-1"><a href="javascript: void(0);"
+                            class="text-body">Analytics</a></h5>
+                        <p class="text-muted text-truncate mb-0">12 Files</p>
+                      </div>
+                      <div class="align-self-end ms-2">
+                        <p class="text-muted mb-0 font-size-13"><i class="mdi mdi-clock"></i> 15 min ago</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <i class="bx bxs-folder h1 mb-0 text-warning"></i>
+                      </div>
+                      <div class="avatar-group">
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""
+                              class="rounded-circle avatar-sm">
+                          </a>
+                        </div>
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt=""
+                              class="rounded-circle avatar-sm">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                      <div class="overflow-hidden me-auto">
+                        <h5 class="font-size-15 text-truncate mb-1"><a href="javascript: void(0);"
+                            class="text-body">Sketch Design</a></h5>
+                        <p class="text-muted text-truncate mb-0">235 Files</p>
+                      </div>
+                      <div class="align-self-end ms-2">
+                        <p class="text-muted mb-0 font-size-13"><i class="mdi mdi-clock"></i> 23 min ago</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+            <div class="col-xl-4 col-sm-6">
+              <div class="card shadow-none border">
+                <div class="card-body p-3">
+                  <div class="">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <i class="bx bxs-folder h1 mb-0 text-warning"></i>
+                      </div>
+                      <div class="avatar-group">
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <div class="avatar-sm">
+                              <span class="avatar-title rounded-circle bg-info text-white font-size-16">
+                                K
+                              </span>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt=""
+                              class="rounded-circle avatar-sm">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                      <div class="overflow-hidden me-auto">
+                        <h5 class="font-size-15 text-truncate mb-1"><a href="javascript: void(0);"
+                            class="text-body">Applications</a></h5>
+                        <p class="text-muted text-truncate mb-0">20 Files</p>
+                      </div>
+                      <div class="align-self-end ms-2">
+                        <p class="text-muted mb-0 font-size-13"><i class="mdi mdi-clock"></i> 45 min ago</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-sm-6">
+              <h5 class="font-size-16 me-3">Files</h5>
+            </div>
+            <div class="col-lg-8 col-sm-6">
+              <div class="d-flex align-items-center justify-content-sm-end">
+
+                <div class="mb-2 me-2">
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="mdi mdi-plus me-1"></i> Create New
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="#"><i class="mdi mdi-folder-outline me-1"></i> Add New</a>
+                      <a class="dropdown-item" href="#"><i class="mdi mdi-file-outline me-1"></i> Import</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="mt-2">
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Date Created</th>
+                  <th scope="col">Date modified</th>
+                  <th scope="col">Members</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {% for table in tables %}
+                  <td>{{table.id}}</td>
+                  <td><a href="javascript: void(0);" class="text-dark fw-medium"> {{table.file_name}}</a>
+                  </td>
+                  <td>{{table.date_created}}</td>
+                  <td>{{table.date_modified}}</td>
+                  <td>
+                    <div class="avatar-group">
+                      <div class="avatar-group-item">
+                        <a href="javascript: void(0);" class="d-inline-block">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt=""
+                            class="rounded-circle avatar-sm">
+                        </a>
+                      </div>
+                      <div class="avatar-group-item">
+                        <a href="javascript: void(0);" class="d-inline-block">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""
+                            class="rounded-circle avatar-sm">
+                        </a>
+                      </div>
+                      <div class="avatar-group-item">
+                        <a href="javascript: void(0);" class="d-inline-block">
+                          <div class="avatar-sm">
+                            <span class="avatar-title rounded-circle bg-success text-white font-size-16">
+                              A
+                            </span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <a class="font-size-16 text-muted" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                      </a>
+
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Open</a>
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Rename</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Remove</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% include "includes/footer.html" %}
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<!-- Add these script tags to your HTML file -->
+
+
+
+{% endblock javascripts %}

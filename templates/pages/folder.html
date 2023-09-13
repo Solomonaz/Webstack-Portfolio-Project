@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %} {% endblock stylesheets %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <h5 class="card-header ">Create Folder
+            <a href="/" class="btn btn-primary btn-sm" style="float: right;">Home</a>
+            <div class="dropdown" style="float: right;">
+                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <i class="mdi mdi-plus me-1"></i> Create New
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <!-- <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a> -->
+                  <a class="dropdown-item" href="#"><i class="mdi mdi-file-outline me-1"></i> File</a>
+                </div>
+              </div>
+        </h5>
+        <div class="card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-8">
+                        <select name="category" id="category" class="form-control">
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="category1">Category1</option>
+                            <option value="category2">Category2</option>
+                            <option value="category3">Category3</option>
+                            <option value="category4">Category4</option>
+                            <option value="category5">Category5</option>
+                        </select>
+                        <input type="text" name="folder" class="form-control mt-2" placeholder="Folder Name">
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <button type="submit" class="btn btn-sm btn-primary">Create folder</button>
+                    </div>
+                </div>
+        </div>
+
+        </form>
+    </div>
+</div>
+{% endblock content %}

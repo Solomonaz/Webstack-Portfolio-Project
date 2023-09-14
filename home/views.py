@@ -10,6 +10,10 @@ from django.contrib import messages
 from . forms import SidenavForm
 from . models import Category, TableFile
 
+from import_export.formats import base_formats
+from import_export import resources, fields, widgets
+from import_export.forms import ImportForm
+
 
 # def login(request):
 #     return render(request, 'login.html')
@@ -73,3 +77,9 @@ def create_file(request):
 def tablefile(request):
     tables = TableFile.objects.all()
     return render(request,'index.html',{'tables':tables})
+
+def import_data(request):
+    return render(request, 'pages/import.html')
+
+def add_data(request):
+    return render(request, 'pages/add_data.html')

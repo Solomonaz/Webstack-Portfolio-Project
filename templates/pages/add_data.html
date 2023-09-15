@@ -6,28 +6,51 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<div class="container">
+<div class="">
 <div class="card text-center my-5">
     <div class="card-header">
       <h3>Add data Tables</h3>
     </div>
     <div class="card-body ">
         <form  method="POST" enctype="multipart/form-data">
-            <div class="mx-sm-3 mb-2">
-              <div class="row">
+          {% csrf_token %}
+            <div class="row mx-sm-3 mb-2">
+              <!-- <div class="row"> -->
                 <div class="col-md-6 mb-3">
-                  <input type="text" name="name" id="name" class="form-control" placeholder="Add Name">
+                  {{form.accusor_name}}
                 </div>
                 <div class="col-md-6 mb-3">
-                  <input type="text" name="name" id="name" class="form-control" placeholder="Add Name">
+                  {{form.defendent_name}}
                 </div>
                 <div class="col-md-6 mb-3">
-                  <input type="text" name="name" id="name" class="form-control" placeholder="Add Name">
+                  {{form.house_number}}
                 </div>
                 <div class="col-md-6 mb-3">
-                  <input type="text" name="name" id="name" class="form-control" placeholder="Add Name">
+                  {{form.id_number}}
                 </div>
-              </div>
+                <div class="col-md-6 mb-3">
+                  {{form.court_house}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.debate_type}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_archive_initiated}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_court_decision_made}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_court_decision_copy_sent}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.prosecutor}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.status}}
+                </div>
+        
+              <!-- </div> -->
              </div>
             <button type="submit" class="btn btn-primary mb-2">Import</button>
           </form>

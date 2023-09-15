@@ -5,15 +5,11 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import logout
-from django.views.decorators.cache import never_cache
 from django.contrib import messages
 from . forms import SidenavForm, TableFileForm
 from . models import Category, TableFile
 
 from tablib import Dataset
-from import_export.formats import base_formats
-from import_export import resources, fields, widgets
-from import_export.forms import ImportForm
 from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
@@ -109,6 +105,16 @@ def import_data(request):
                 data[1],
                 data[2],
                 data[3],
+                data[4],
+                data[5],
+                data[6],
+                data[7],
+                data[8],
+                data[9],
+                data[10],
+                data[11],
+                # data[12],
+
             )
             value.save()
     return render(request, 'pages/import.html')
@@ -117,6 +123,7 @@ def import_data(request):
 def add_data(request):
     if request.method == 'POST':
         form = TableFileForm(request.POST)
+        print(form.data)
         if form.is_valid():
             form_data = form.save(commit=False)
             form_data.save()
@@ -125,6 +132,6 @@ def add_data(request):
     else:
         form = TableFileForm()
     context = {
-        form:'form',
+        'form':form,
     }
-    return render(request, 'pages/add_data.html', context)
+    return render(request, 'pages/add_data.html', context)    

@@ -22,12 +22,19 @@ class File(models.Model):
         return self.name
 
 class TableFile(models.Model):
-    file_name = models.CharField(max_length=255)
-    # case = models.CharField(max_length=255)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now_add=True)
+    accusor_name = models.CharField(max_length=255, verbose_name='ከሳሽ መልስ ሰጭ')
+    defendent_name = models.CharField(max_length=255, verbose_name='ተከሳሽ መልስ  ሰጭ')
+    house_number = models.CharField(max_length=255, verbose_name='የቤት ቁጥር')
+    id_number = models.CharField(max_length=255, verbose_name='የመ.ቁ ')
+    court_house = models.CharField(max_length=255, verbose_name='ክርክሩ የነበረበት ፍ/ቤት')
+    debate_type = models.CharField(max_length=255, verbose_name='የክርክሩ አይነት')
+    date_archive_initiated = models.DateTimeField(auto_now_add=False, verbose_name='መዝገቡ የመጣበት ቀን')
+    date_court_decision_made = models.DateTimeField(auto_now_add=False, verbose_name='ፍርድ ቤቱ ውሳኔ የሰጠበት ቀን')
+    date_court_decision_copy_sent = models.DateTimeField(auto_now_add=False, verbose_name='የውሳኔ ግልባጭ የተላከበት ቀን')
+    status = models.CharField(max_length=255, verbose_name='በፍ/ቤቱ ውሳኔ መሰረት ተፈፅሞል/አልተፈፀመም')
+    prosecutor = models.CharField(max_length=255, verbose_name='ጉዳዩን የያዘው ዐቃቤ ህግ ስም')
 
     def __str__(self):
-        return self.file_name
+        return self.prosecutor
     
 # class AddFile(models.Model):

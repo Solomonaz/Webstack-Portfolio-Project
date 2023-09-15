@@ -314,7 +314,7 @@
             <div class="col-lg-8 col-sm-6">
               <div class="d-flex align-items-center justify-content-sm-end">
                 <div class="mb-2 me-2">
-                  <a href="#" class="btn rounded btn-primary"> <i class="mdi mdi-plus me-1"></i>Add</a>
+                  <a href="{% url 'add_data' %}" class="btn rounded btn-primary"> <i class="mdi mdi-plus me-1"></i>Add</a>
                   <a href="{% url 'import_data' %}" class="btn rounded btn-primary">Import</a>
                   <a href="{% url 'export_data' %}" class="btn rounded btn-primary">Export</a>
                 </div>
@@ -323,22 +323,40 @@
           </div>
           <hr class="mt-2">
           <div class="table-responsive">
-            <table class="table align-middle table-nowrap table-hover mb-0">
+            <table class="">
               <thead class="table-light">
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date Created</th>
-                  <th scope="col">Date modified</th>
-                  <th scope="col">Members</th>
-                  <th scope="col">Action</th>
+                  <th>ተ.ቁ</th>
+                  <th>ከሳሽ መልስ ሰጭ</th>
+                  <th>ተከሳሽ መልስ ሰጭ </th>
+                  <th>የቤት ቁጥር </th>
+                  <th>የመ.ቁ </th>
+                  <th>ክርክሩ የነበረበት ፍ/ቤት </th>
+                  <th>የክርክሩ አይነት </th>
+                  <th>መዝገቡ የመጣበት ቀን </th>
+                  <th>ፍርድ ቤቱ ውሳኔ የሰጠበት ቀን </th>
+                  <th>የውሳኔ ግልባጭ የተላከበት ቀን </th>
+                  <th>ጉዳዩን የያዘው ዐቃቤ ህግ ስም </th>
+                  <th>በፍ/ቤቱ ውሳኔ መሰረት ተፈፅሞል/አልተፈፀመም </th> 
+                  <th>ለሌላ ዐቃቤ ህግ ያስተላልፉ</th>
+                  <th>ድርጊት</th>
                 </tr>
               </thead>
               <tbody>
                 {% for new_record in new_records %}
                 <tr>
-                  <td><a href="javascript: void(0);" class="text-dark fw-medium">{{ new_record.file_name }}</a></td>
-                  <td>{{ new_record.date_created | date:"d/m/Y"}}</td>
-                  <td>{{ new_record.date_modified | date:"d/m/Y"}}</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ new_record.accusor_name }}</td>
+                  <td>{{new_record.defendent_name}}</td>
+                  <td>{{new_record.house_number}}</td>
+                  <td>{{new_record.id_number}}</td>
+                  <td>{{new_record.court_house}}</td>
+                  <td>{{new_record.debate_type}}</td>
+                  <td>{{new_record.date_archive_initiated | date:"d/m/Y" }}</td>
+                  <td>{{new_record.date_court_decision_made | date:"d/m/Y" }}</td>
+                  <td>{{new_record.date_court_decision_copy_sent | date:"d/m/Y" }}</td>
+                  <td>{{new_record.prosecutor}}</td>
+                  <td>{{new_record.status}}</td>
                   <td>
                     <div class="avatar-group">
                       <div class="avatar-group-item">
@@ -371,7 +389,6 @@
                       </a>
 
                       <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#">Open</a>
                         <a class="dropdown-item" href="#">Edit</a>
                         <a class="dropdown-item" href="#">Rename</a>
                         <div class="dropdown-divider"></div>

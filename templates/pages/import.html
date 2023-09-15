@@ -12,9 +12,10 @@
         <h3>Add data Tables</h3>
     </div>
     <div class="card-body ">
-        <form class="form-inline" method="POST">
+        <form class="form-inline" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
             <div class="form-group mx-sm-3 mb-2">
-              <input type="file" class="form-control" id="import_data" placeholder="import_data">
+              <input type="file" class="form-control" id="import_data" name="import_data" placeholder="import_data">
             </div>
             <button type="submit" class="btn btn-primary mb-2">Import</button>
           </form>

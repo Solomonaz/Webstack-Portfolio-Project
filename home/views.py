@@ -7,12 +7,16 @@ from django.urls import reverse
 from django.contrib.auth import logout
 from django.views.decorators.cache import never_cache
 from django.contrib import messages
-from . forms import SidenavForm
+from . forms import SidenavForm, TableFileForm
 from . models import Category, TableFile
 
+from tablib import Dataset
 from import_export.formats import base_formats
 from import_export import resources, fields, widgets
 from import_export.forms import ImportForm
+from . resources import TableFileResource
+import datetime
+from django.core.paginator import Paginator
 
 
 # def login(request):
@@ -20,7 +24,14 @@ from import_export.forms import ImportForm
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
+    new_records = TableFile.objects.all()
+    paginator = Paginator(new_records, 10)
+    page_number = request.GET.get('page')
+    new_records = paginator.get_page(page_number)
+    context = {
+        'segment': 'index', 
+        'new_records':new_records,
+        }
 
     html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
@@ -74,12 +85,46 @@ def create_folder(request):
 def create_file(request):
     return render(request, 'pages/file.html')
 
-def tablefile(request):
-    tables = TableFile.objects.all()
-    return render(request,'index.html',{'tables':tables})
+# export data
+@login_required(login_url="/login/")
+def export_data(request):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
+    person_resource = TableFileResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = f'attachment; filename="file_{timestamp}.xls"'
+    return response
 
+# import excell file
+@login_required(login_url="/login/")
 def import_data(request):
+    if request.method == 'POST':
+        form = TableFileResource()
+        dataset = Dataset()
+        new_person = request.FILES['import_data']
+        imported_data = dataset.load(new_person.read(), format='xlsx')
+        for data in imported_data:
+            value = TableFile(
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+            )
+            value.save()
     return render(request, 'pages/import.html')
 
+@login_required(login_url="/login/")
 def add_data(request):
-    return render(request, 'pages/add_data.html')
+    if request.method == 'POST':
+        form = TableFileForm(request.POST)
+        if form.is_valid():
+            form_data = form.save(commit=False)
+            form_data.save()
+            messages.success(request, 'data added sucessfully!')
+            return redirect('/')
+    else:
+        form = TableFileForm()
+    context = {
+        form:'form',
+    }
+    return render(request, 'pages/add_data.html', context)

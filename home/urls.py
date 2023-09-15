@@ -11,6 +11,7 @@ urlpatterns = [
     path('file/', views.create_file, name='file'),
 
     path('import_data/', views.import_data, name='import_data'),
+    path('export_data/', views.export_data, name='export_data'),
     path('add_data/', views.add_data, name='add_data'),
 
 ]

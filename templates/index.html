@@ -316,7 +316,7 @@
                 <div class="mb-2 me-2">
                   <a href="#" class="btn rounded btn-primary"> <i class="mdi mdi-plus me-1"></i>Add</a>
                   <a href="{% url 'import_data' %}" class="btn rounded btn-primary">Import</a>
-                  <a href="#" class="btn rounded btn-primary">Export</a>
+                  <a href="{% url 'export_data' %}" class="btn rounded btn-primary">Export</a>
                 </div>
               </div>
             </div>
@@ -326,7 +326,6 @@
             <table class="table align-middle table-nowrap table-hover mb-0">
               <thead class="table-light">
                 <tr>
-                  <th scope="col">ID</th>
                   <th scope="col">Name</th>
                   <th scope="col">Date Created</th>
                   <th scope="col">Date modified</th>
@@ -335,13 +334,11 @@
                 </tr>
               </thead>
               <tbody>
+                {% for new_record in new_records %}
                 <tr>
-                  {% for table in tables %}
-                  <td>{{table.id}}</td>
-                  <td><a href="javascript: void(0);" class="text-dark fw-medium"> {{table.file_name}}</a>
-                  </td>
-                  <td>{{table.date_created}}</td>
-                  <td>{{table.date_modified}}</td>
+                  <td><a href="javascript: void(0);" class="text-dark fw-medium">{{ new_record.file_name }}</a></td>
+                  <td>{{ new_record.date_created | date:"d/m/Y"}}</td>
+                  <td>{{ new_record.date_modified | date:"d/m/Y"}}</td>
                   <td>
                     <div class="avatar-group">
                       <div class="avatar-group-item">
@@ -383,9 +380,27 @@
                     </div>
                   </td>
                 </tr>
-                {% endfor %}
+                {% endfor %}                  
+
               </tbody>
             </table>
+            <div class="pagination">
+              <span class="step-links">
+                  {% if new_records.has_previous %}
+                      <a href="?page=1">&laquo; first</a>
+                      <a href="?page={{ new_records.previous_page_number }}">previous</a>
+                  {% endif %}
+              
+                  <span class="current-page">
+                      Page {{ new_records.number }} of {{ new_records.paginator.num_pages }}.
+                  </span>
+              
+                  {% if new_records.has_next %}
+                      <a href="?page={{ new_records.next_page_number }}">next</a>
+                      <a href="?page={{ new_records.paginator.num_pages }}">last &raquo;</a>
+                  {% endif %}
+              </span>
+          </div>
           </div>
 
         </div>

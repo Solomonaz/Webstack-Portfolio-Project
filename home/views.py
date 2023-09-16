@@ -117,6 +117,7 @@ def import_data(request):
 
             )
             value.save()
+            return redirect('/')
     return render(request, 'pages/import.html')
 
 @login_required(login_url="/login/")

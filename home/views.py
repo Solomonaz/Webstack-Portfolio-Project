@@ -154,4 +154,7 @@ def edit_data(request, pk):
         'form':record_edit_form
     }
     return render(request, 'pages/edit.html', context)
-    # return redirect(reverse('index'))
+
+
+def manage_user(request):
+    return render(request, 'pages/manage-user.html')

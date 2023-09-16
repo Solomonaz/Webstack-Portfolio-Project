@@ -17,5 +17,8 @@ urlpatterns = [
     path('remove_data/<int:pk>/', views.remove_data, name='remove_data'),
     path('edit_data/<int:pk>/', views.edit_data, name='edit_data'),
 
+    path('manage_user/', views.manage_user, name='manage_user'),
+
+
 
 ]

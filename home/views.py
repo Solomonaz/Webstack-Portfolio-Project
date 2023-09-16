@@ -17,8 +17,7 @@ from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
 
-# def login(request):
-#     return render(request, 'login.html')
+
 
 @login_required(login_url="/login/")
 def index(request):
@@ -177,7 +176,7 @@ def edit_user(request, pk):
     if record_edit_form.is_valid():
         record_edit_form.save()
         messages.success(request, ' You have updated a user.')
-        return redirect('/')
+        return redirect('manage_user')
         
     context = {
         'form':record_edit_form

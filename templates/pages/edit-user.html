@@ -17,7 +17,7 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <form method="POST" action="{%url 'register' %}"> 
+            <form method="POST"> 
                 {% csrf_token %}
                 <div class="form-group">
                     {{ form.first_name.label_tag }}

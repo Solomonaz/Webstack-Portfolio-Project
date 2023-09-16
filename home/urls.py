@@ -14,4 +14,8 @@ urlpatterns = [
     path('export_data/', views.export_data, name='export_data'),
     path('add_data/', views.add_data, name='add_data'),
 
+    path('remove_data/<int:pk>/', views.remove_data, name='remove_data'),
+    path('edit_data/<int:pk>/', views.edit_data, name='edit_data'),
+
+
 ]

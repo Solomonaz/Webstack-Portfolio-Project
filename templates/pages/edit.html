@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="">
+<div class="card text-center my-5">
+    <div class="card-header">
+      <h3>Edit data</h3>
+    </div>
+    <div class="card-body ">
+        <form  method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="row mx-sm-3 mb-2">
+              <!-- <div class="row"> -->
+                <div class="col-md-6 mb-3">
+                  {{form.accusor_name}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.defendent_name}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.house_number}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.id_number}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.court_house}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.debate_type}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_archive_initiated}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_court_decision_made}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.date_court_decision_copy_sent}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.prosecutor}}
+                </div>
+                <div class="col-md-6 mb-3">
+                  {{form.status}}
+                </div>
+        
+              <!-- </div> -->
+             </div>
+            <button type="submit" class="btn btn-primary mb-2">Update</button>
+            <button id="cancel" name="cancel" class="btn btn-primary" onclick="history.back()">Cancel</button>          </form>
+    </div>
+  </div>
+</div>
+{% include "includes/footer.html" %}
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<!-- Add these script tags to your HTML file -->
+
+
+
+{% endblock javascripts %}

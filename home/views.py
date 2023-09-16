@@ -14,7 +14,6 @@ from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
 
-
 # def login(request):
 #     return render(request, 'login.html')
 
@@ -126,8 +125,9 @@ def add_data(request):
         form = TableFileForm(request.POST)
         print(form.data)
         if form.is_valid():
-            form_data = form.save(commit=False)
-            form_data.save()
+            form.save()
+            # form_data = form.save(commit=False)
+            # form_data.save()
             messages.success(request, 'data added sucessfully!')
             return redirect('/')
     else:
@@ -135,4 +135,23 @@ def add_data(request):
     context = {
         'form':form,
     }
-    return render(request, 'pages/add_data.html', context)    
+    return render(request, 'pages/add_data.html', context)   
+
+def remove_data(request, pk):
+    data_removed = TableFile.objects.get(id=pk)
+    data_removed.delete()
+    return redirect('/')
+
+def edit_data(request, pk):
+    record_edit_model = TableFile.objects.get(id=pk)
+    record_edit_form = TableFileForm(request.POST or None, instance=record_edit_model)
+    if record_edit_form.is_valid():
+        record_edit_form.save()
+        messages.success(request, ' You have updated a record.')
+        return redirect('/')
+        
+    context = {
+        'form':record_edit_form
+    }
+    return render(request, 'pages/edit.html', context)
+    # return redirect(reverse('index'))

@@ -79,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+AUTH_USER_MODEL = 'authentication.Account'
 
 
 # Database

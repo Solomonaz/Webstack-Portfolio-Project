@@ -7,64 +7,65 @@
 
 {% block content %}
 
-<div class="container">
-<div class="title mt-7 py-3">
-    <h3 class="text-center">Manage Users
-        <a href="" class="btn btn-sm btn-primary"> <i class="mdi mdi-plus me-1"></i> Add User</a>
-    </h3>
-</div>
-<div class="table-responsive">
-    <table class="table table-hover table-border">
-      <thead class="table-light">
-        <tr>
-          <!-- <th>ተ.ቁ</th> -->
-          <th>Full Name</th>
-          <th>Phone Number </th>
-          <th>Role </th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <!-- <td>{{ forloop.counter }}</td> -->
-          <td>Abebe</td>
-          <td>09232320434</td>
-          <td>Prosecutor</td>
-          <td>
-            <div class="dropdown">
-              <a class="font-size-16 text-muted" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                <i class="mdi mdi-dots-horizontal"></i>
-              </a>
-
-              <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#" onclick="return confirm('Are you sure you want to delete this data?')">Remove</a>
-              </div>
+<div class="mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="m-0">Manage Users</h3>
+                        <a href="{% url 'register' %}" class="btn btn-sm btn-light">
+                            <i class="mdi mdi-plus me-1"></i> Add User
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>User Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for account in accounts%}
+                                <tr>
+                                    <td>{{account.full_name}}</td>
+                                    <td>{{account.username}}</td>
+                                    <td>{{account.phone_number}}</td>
+                                    <td>{{account.email}}</td>
+                                    <td>{{account.role}}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button"
+                                                id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Action
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end"
+                                                aria-labelledby="actionDropdown">
+                                                <a class="dropdown-item" href="{% url 'edit_user' account.id %}">Edit</a>
+                                                <a class="dropdown-item" href="{% url 'remove_user' account.id %}"
+                                                    onclick="return confirm('Are you sure you want to delete this data?')">Remove</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-    <div class="pagination">
-      <span class="step-links">
-          {% if new_records.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ new_records.previous_page_number }}">previous</a>
-          {% endif %}
-      
-          <span class="current-page">
-              Page {{ new_records.number }} of {{ new_records.paginator.num_pages }}.
-          </span>
-      
-          {% if new_records.has_next %}
-              <a href="?page={{ new_records.next_page_number }}">next</a>
-              <a href="?page={{ new_records.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-      </span>
-  </div>
-  </div>
+        </div>
+    </div>
 </div>
+
 
 {% include "includes/footer.html" %}
 {% endblock content %}

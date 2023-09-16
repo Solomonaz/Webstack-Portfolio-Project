@@ -1,5 +1,7 @@
 from django import forms
 from . models import Category, TableFile
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
 
 class SidenavForm(forms.ModelForm):
     class Meta:
@@ -97,3 +99,12 @@ class TableFileForm(forms.ModelForm):
         }
     ))
 
+# class CustomUserCreationForm(UserCreationForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = '__all__'
+
+# class CustomLoginForm(AuthenticationForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = ('username', 'password')

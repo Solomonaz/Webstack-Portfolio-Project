@@ -7,7 +7,10 @@ from django.urls import reverse
 from django.contrib.auth import logout
 from django.contrib import messages
 from . forms import SidenavForm, TableFileForm
+from django.contrib.auth import authenticate, login
 from . models import Category, TableFile
+from authentication.models import Account
+from authentication.forms import RegistrationForm
 
 from tablib import Dataset
 from . resources import TableFileResource
@@ -157,4 +160,26 @@ def edit_data(request, pk):
 
 
 def manage_user(request):
-    return render(request, 'pages/manage-user.html')
+    accounts = Account.objects.all()
+    context = {
+        'accounts': accounts
+    }
+    return render(request, 'pages/manage-user.html',context)
+
+def remove_user(request, pk):
+    user_removed = Account.objects.get(id=pk)
+    user_removed.delete()
+    return redirect('manage_user')
+
+def edit_user(request, pk):
+    record_edit_model = Account.objects.get(id=pk)
+    record_edit_form = RegistrationForm(request.POST or None, instance=record_edit_model)
+    if record_edit_form.is_valid():
+        record_edit_form.save()
+        messages.success(request, ' You have updated a user.')
+        return redirect('/')
+        
+    context = {
+        'form':record_edit_form
+    }
+    return render(request, 'pages/edit-user.html', context)

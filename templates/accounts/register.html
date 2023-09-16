@@ -35,7 +35,49 @@
                 <form method="POST">
 
                   {% csrf_token %}
-            
+
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      {{ form.first_name }}
+                    </div>
+                  </div>
+                  <span class="text-error">{{ form.first_name.errors }}</span>
+
+
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      {{ form.last_name }}
+                    </div>
+                  </div>
+                  <span class="text-error">{{ form.last_name.errors }}</span>
+
+
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      {{ form.phone_number }}
+                    </div>
+                  </div>
+                  <span class="text-error">{{ form.phone_number.errors }}</span>
+
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      {{ form.role }}
+                    </div>
+                  </div>
+                  <span class="text-error">{{ form.role.errors }}</span>
+
                   <div class="form-group">
                     <div class="input-group input-group-alternative mb-3">
                       <div class="input-group-prepend">

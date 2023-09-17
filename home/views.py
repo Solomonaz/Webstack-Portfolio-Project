@@ -182,3 +182,15 @@ def edit_user(request, pk):
         'form':record_edit_form
     }
     return render(request, 'pages/edit-user.html', context)
+
+def search(request):
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        if keyword:
+            products  = TableFile.objects.order_by('-created_date').filter(Q(description__icontains = keyword) |  Q(product_name__icontains = keyword))
+            product_count = products.count()
+    context = {
+        'products':products,
+        'product_count':product_count
+    }
+    return render(request, 'store/store.html', context) 

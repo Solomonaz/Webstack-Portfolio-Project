@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import Category, TableFile
+from .models import Category, TableFile, File
 from import_export.admin import ImportExportModelAdmin
+
+
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ('file_name', 'uploaded_by','date_created','file','file_size')
 
 class SidenavAdmin(admin.ModelAdmin):
     list_display = ('category_name',)

@@ -8,7 +8,7 @@ urlpatterns = [
     path('register/', register_user, name="register"),
     path('sidenavcreate/', views.sidenavcreate, name='sidenavcreate'),
     path('folder/', views.create_folder, name='folder'),
-    path('file/', views.create_file, name='file'),
+    path('create_file/', views.create_file, name='create_file'),
 
     path('import_data/', views.import_data, name='import_data'),
     path('export_data/', views.export_data, name='export_data'),

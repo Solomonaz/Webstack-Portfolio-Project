@@ -27,8 +27,8 @@
                       <i class="mdi mdi-plus me-1"></i> Create New
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                      <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
-                      <a class="dropdown-item" href="{% url 'file' %}"><i class="mdi mdi-file-outline me-1"></i> File</a>
+                      <!-- <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
+                      <a class="dropdown-item" href="{% url 'create_file' %}"><i class="mdi mdi-file-outline me-1"></i> File</a> -->
                     </div>
                   </div>
                 </div>
@@ -304,19 +304,73 @@
                 </div>
               </div>
             </div>
+          </div>
             <!-- end col -->
 
-          </div>
-          <div class="row">
+            <div class="row mt-5">
+              <div class="col-lg-4 col-sm-6">
+                <h5 class="font-size-16 me-3">List of Files</h5>
+              </div>
+              <div class="col-lg-8 col-sm-6">
+                <div class="d-flex align-items-center justify-content-end">
+                  <a href="{% url 'create_file' %}" class="btn rounded btn-primary btn-sm text-white">
+                    <i class="mdi mdi-plus me-1"></i> Add
+                  </a>
+                </div>
+              </div>
+            </div>           
+            <div class="table-responsive mt-3">            
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>No.</th>
+                    <th>File Name</th>
+                    <th>Uploaded By</th>
+                    <th>File Size</th>
+                    <th>File</th>
+                    <th>Date Uploaded</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for file in files %}
+                  <tr>
+                    <th>{{forloop.counter}}</th>
+                    <th>{{file.file_name}}</th>
+                    <th>{{file.uploaded_by}}</th>
+                    <th>{{file.file_size}}MB</th>
+                    <th>{{file.file}}</th>
+                    <th>{{file.date_created | date:"d/m/Y"}}</th>
+                    <td>
+                      <div class="dropdown">
+                        <a class="font-size-16 text-muted" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
+                          <i class="mdi mdi-dots-horizontal"></i>
+                        </a>
+  
+                        <div class="dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item" href="">Edit</a>
+                          <a class="dropdown-item" href="" onclick="return confirm('Are you sure you want to delete this data?')">Remove</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- end list of files -->
+            <hr class="">
+          <div class="row mt-5">
             <div class="col-lg-4 col-sm-6">
-              <h5 class="font-size-16 me-3">Files</h5>
+              <h5 class="font-size-16 me-3">List of Records</h5>
             </div>
             <div class="col-lg-8 col-sm-6">
               <div class="d-flex align-items-center justify-content-sm-end">
                 <div class="mb-2 me-2">
-                  <a href="{% url 'add_data' %}" class="btn rounded btn-primary"> <i class="mdi mdi-plus me-1"></i>Add</a>
-                  <a href="{% url 'import_data' %}" class="btn rounded btn-primary">Import</a>
-                  <a href="{% url 'export_data' %}" class="btn rounded btn-primary">Export</a>
+                  <a href="{% url 'add_data' %}" class="btn rounded btn-primary btn-sm text-white"> <i class="mdi mdi-plus me-1"></i>Add</a>
+                  <a href="{% url 'import_data' %}" class="btn rounded btn-primary btn-sm text-white">Import</a>
+                  <a href="{% url 'export_data' %}" class="btn rounded btn-primary btn-sm text-white">Export</a>
                 </div>
               </div>
             </div>
@@ -433,6 +487,9 @@
 
 <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
 <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <!-- Add these script tags to your HTML file -->
 
 

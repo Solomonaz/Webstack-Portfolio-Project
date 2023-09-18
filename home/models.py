@@ -16,12 +16,15 @@ class Folder(models.Model):
         return self.folder_name
 
 class File(models.Model):
-    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    # folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+    file_name = models.CharField(max_length=100)
+    uploaded_by  = models.CharField(max_length=255)
     file = models.FileField(upload_to='files/')
+    file_size = models.FloatField()
+    date_created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.name
+        return self.file_name
 
 class TableFile(models.Model):
     accusor_name = models.CharField(max_length=255, verbose_name='ከሳሽ መልስ ሰጭ')

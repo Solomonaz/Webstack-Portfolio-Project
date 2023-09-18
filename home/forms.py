@@ -1,5 +1,5 @@
 from django import forms
-from . models import Category, TableFile
+from . models import Category, TableFile, File
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
@@ -15,6 +15,38 @@ class SidenavForm(forms.ModelForm):
             "class": "form-control"
         }
     ))
+
+class FileForm(forms.ModelForm):
+    class Meta:
+        model = File
+        fields = '__all__'
+
+    file_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "File name",
+                "class": "form-control"
+            }
+        ))
+    uploaded_by = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Uploaded By",
+                "class": "form-control"
+            }
+        ))
+
+    class Meta:
+        model = File
+        fields = ['file_name', 'uploaded_by', 'file']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.file_size = instance.file.size
+        if commit:
+            instance.save()
+        return instance
+
 
 class TableFileForm(forms.ModelForm):
     class Meta:

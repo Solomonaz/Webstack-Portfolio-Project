@@ -10,47 +10,39 @@
     <div class="card">
         <h5 class="card-header ">Create File
             <a href="/" class="btn btn-primary btn-sm" style="float: right;">Home</a>
-            <div class="dropdown" style="float: right;">
-                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-                  <i class="mdi mdi-plus me-1"></i> Create New
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
-                  <!-- <a class="dropdown-item" href="#"><i class="mdi mdi-file-outline me-1"></i> File</a> -->
-                </div>
-              </div>
         </h5>
         <div class="card-body">
-            <form action="" method="POST">
+            <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
                 {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-10">
-                        <select name="category" id="category" class="form-control">
-                            <option value="" disabled selected>Select a category</option>
-                            <option value="category1">Category1</option>
-                            <option value="category2">Category2</option>
-                            <option value="category3">Category3</option>
-                            <option value="category4">Category4</option>
-                            <option value="category5">Category5</option>
-                        </select>
-                        <select name="folder" id="folder" class="form-control mt-3">
-                            <option value="" disabled selected>Select a folder</option>
-                            <option value="folder1">folder1</option>
-                            <option value="folder2">folder2</option>
-                            <option value="folder3">folder3</option>
-                            <option value="folder4">folder4</option>
-                            <option value="folder5">folder5</option>
-                        </select>
-                        <input type="file" name="file" class="form-control mt-3" placeholder="File Name">
-                    </div>
-                    <div class="col-md-2 mt-5">
-                        <button type="submit" class="btn btn-sm btn-primary">Create folder</button>
-                    </div>
+                <div class="mb-3">
+                  <label for="fileName" class="form-label">File Name:</label>
+                  {{form_file.file_name}}
                 </div>
-        </div>
-
-        </form>
+                <div class="mb-3">
+                  <label for="uploadedby" class="form-label">Uploaded By:</label>
+                  {{form_file.uploaded_by}}
+                </div>
+                <div class="mb-3">
+                  <label for="uploadedby" class="form-label">Choose file</label>
+                  {{form_file.file}}
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+       </div>
     </div>
 </div>
 {% endblock content %}
+{% block javascripts %}
+
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Add these script tags to your HTML file -->
+
+
+
+{% endblock javascripts %}

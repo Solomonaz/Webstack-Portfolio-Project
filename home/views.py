@@ -4,13 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
-from django.contrib.auth import logout
 from django.contrib import messages
-from . forms import SidenavForm, TableFileForm
-from django.contrib.auth import authenticate, login
-from . models import Category, TableFile
+from . forms import SidenavForm, TableFileForm, FileForm
+from . models import TableFile, File
 from authentication.models import Account
 from authentication.forms import RegistrationForm
+
 
 from tablib import Dataset
 from . resources import TableFileResource
@@ -22,23 +21,26 @@ from django.core.paginator import Paginator
 @login_required(login_url="/login/")
 def index(request):
     new_records = TableFile.objects.all()
+    files = File.objects.all()
     paginator = Paginator(new_records, 10)
     page_number = request.GET.get('page')
     new_records = paginator.get_page(page_number)
+
     context = {
         'segment': 'index', 
         'new_records':new_records,
+        'files':files,
         }
 
     html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
 
 
+
 @login_required(login_url="/login/")
 def pages(request):
     context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
+
     try:
 
         load_template = request.path.split('/')[-1]
@@ -79,8 +81,32 @@ def sidenavcreate(request):
 def create_folder(request):
     return render(request, 'pages/folder.html')
 
+
 def create_file(request):
-    return render(request, 'pages/file.html')
+    if request.method == 'POST':
+        form_file = FileForm(request.POST, request.FILES)
+        if form_file.is_valid():
+            instance = form_file.save(commit=False)
+
+            # Calculate file size in MB
+            file_size_in_bytes = request.FILES['file'].size
+            file_size_in_mb = file_size_in_bytes / (1024 * 1024)
+            instance.file_size = round(file_size_in_mb, 2)  # Rounded to two decimal places
+
+            instance.save()
+            messages.success(request, 'Data added successfully!')
+            return redirect('/')
+        else:
+            messages.error(request, 'Data not valid. Please check the form.')
+    else:
+        form_file = FileForm()
+    
+    context = {
+        'form_file': form_file,
+    }
+    return render(request, 'pages/file.html', context)
+
+
 
 # export data
 @login_required(login_url="/login/")
@@ -125,7 +151,7 @@ def import_data(request):
 def add_data(request):
     if request.method == 'POST':
         form = TableFileForm(request.POST)
-        print(form.data)
+        # print(form.data)
         if form.is_valid():
             form.save()
             # form_data = form.save(commit=False)

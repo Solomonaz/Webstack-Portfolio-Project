@@ -15,13 +15,18 @@ from tablib import Dataset
 from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 
 @login_required(login_url="/login/")
 def index(request):
     new_records = TableFile.objects.all()
+    new_records_count = new_records.count()
+
     files = File.objects.all()
+    files_count = files.count()
+
     paginator = Paginator(new_records, 10)
     page_number = request.GET.get('page')
     new_records = paginator.get_page(page_number)
@@ -29,7 +34,9 @@ def index(request):
     context = {
         'segment': 'index', 
         'new_records':new_records,
+        'new_records_count':new_records_count,
         'files':files,
+        'files_count':files_count,
         }
 
     html_template = loader.get_template('index.html')
@@ -106,7 +113,23 @@ def create_file(request):
     }
     return render(request, 'pages/file.html', context)
 
+def edit_file(request, pk):
+    record_edit_model = File.objects.get(id=pk)
+    form_file = FileForm(request.POST or None, instance=record_edit_model)
+    if form_file.is_valid():
+        form_file.save()
+        messages.success(request, ' You have updated a file.')
+        return redirect('/')
+        
+    context = {
+        'form_file':form_file,
+    }
+    return render(request, 'pages/edit-file.html', context)
 
+def delete_file(reques, pk):
+    data_removed = File.objects.get(id=pk)
+    data_removed.delete()
+    return redirect('/')
 
 # export data
 @login_required(login_url="/login/")
@@ -209,14 +232,27 @@ def edit_user(request, pk):
     }
     return render(request, 'pages/edit-user.html', context)
 
-def search(request):
-    if 'keyword' in request.GET:
-        keyword = request.GET['keyword']
-        if keyword:
-            products  = TableFile.objects.order_by('-created_date').filter(Q(description__icontains = keyword) |  Q(product_name__icontains = keyword))
-            product_count = products.count()
+
+def global_search(request):
+    query = request.GET.get('q', '')
+    record_file = []
+    file_results = []
+
+    if query:
+        record_file = TableFile.objects.filter(
+            Q(accusor_name__icontains=query) | Q(defendent_name__icontains=query) | Q(prosecutor__icontains=query))
+        record_file_count = record_file.count()
+
+        file_results = File.objects.filter(
+            Q(uploaded_by__icontains=query) | Q(file_name__icontains=query))
+        file_results_count = file_results.count()
+
     context = {
-        'products':products,
-        'product_count':product_count
+        'query': query,
+        'file_results': file_results,
+        'record_file': record_file,
+        'record_file_count':record_file_count,
+        'file_results_count':file_results_count,
     }
-    return render(request, 'store/store.html', context) 
+
+    return render(request, 'pages/search.html', context)

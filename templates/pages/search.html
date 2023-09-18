@@ -14,7 +14,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-body">
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-lg-4 col-sm-6">
             </div>
             <div class="col-lg-8 col-sm-6">
@@ -27,14 +27,14 @@
                       <i class="mdi mdi-plus me-1"></i> Create New
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                      <!-- <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
-                      <a class="dropdown-item" href="{% url 'create_file' %}"><i class="mdi mdi-file-outline me-1"></i> File</a> -->
+                       <a class="dropdown-item" href="{% url 'folder' %}"><i class="mdi mdi-folder-outline me-1"></i> Folder</a>
+                      <a class="dropdown-item" href="{% url 'create_file' %}"><i class="mdi mdi-file-outline me-1"></i> File</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <h5 class="font-size-16 me-3 mb-0">My Files</h5>
           <div class="row mt-4">
@@ -309,21 +309,21 @@
 
             <div class="row mt-5">
               <div class="col-lg-4 col-sm-6">
-                <h5 class="font-size-16 me-3">
-                  {% if files_count == 0 %}
-                        No Records Found
-                    {% elif files_count == 1 %}
-                        1 Record Found
-                    {% else %}
-                        {{ files_count }} Records Found
-                    {% endif %}
-                 </h5>
+                <h5 class="font-size-16 me-3">List of Files</h5>
               </div>
               <div class="col-lg-8 col-sm-6">
                 <div class="d-flex align-items-center justify-content-end">
-                  <a href="{% url 'create_file' %}" class="btn rounded btn-primary btn-sm text-white">
-                    <i class="mdi mdi-plus me-1"></i> Add
-                  </a>
+                    <div class="mb-2 me-2">
+                        <h4 class="btn btn-sm ">
+                            {% if file_results_count == 0 %}
+                                No Records Found
+                            {% elif file_results_count == 1 %}
+                                1 Record Found
+                            {% else %}
+                                {{ file_results_count }} Records Found
+                            {% endif %}
+                        </h4>
+                    </div>
                 </div>
               </div>
             </div>           
@@ -341,7 +341,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for file in files %}
+                  {% for file in file_results %}
                   <tr>
                     <th>{{forloop.counter}}</th>
                     <th>{{file.file_name}}</th>
@@ -356,8 +356,8 @@
                         </a>
   
                         <div class="dropdown-menu dropdown-menu-end">
-                          <a class="dropdown-item" href="{% url 'edit_file'  file.id %}">Edit</a>
-                          <a class="dropdown-item" href="{% url 'delete_file'  file.id %}" onclick="return confirm('Are you sure you want to delete this data?')">Remove</a>
+                          <a class="dropdown-item" href="">Edit</a>
+                          <a class="dropdown-item" href="" onclick="return confirm('Are you sure you want to delete this data?')">Remove</a>
                         </div>
                       </div>
                     </td>
@@ -371,22 +371,20 @@
             <hr class="">
           <div class="row mt-5">
             <div class="col-lg-4 col-sm-6">
-              <h5 class="font-size-16 me-3">
-                {% if new_records_count == 0 %}
-                      No Records Found
-                  {% elif new_records_count == 1 %}
-                      1 Record Found
-                  {% else %}
-                      {{ new_records_count }} Records Found
-                  {% endif %}
-               </h5>
+              <h5 class="font-size-16 me-3">List of Records</h5>
             </div>
             <div class="col-lg-8 col-sm-6">
               <div class="d-flex align-items-center justify-content-sm-end">
                 <div class="mb-2 me-2">
-                  <a href="{% url 'add_data' %}" class="btn rounded btn-primary btn-sm text-white"> <i class="mdi mdi-plus me-1"></i>Add</a>
-                  <a href="{% url 'import_data' %}" class="btn rounded btn-primary btn-sm text-white">Import</a>
-                  <a href="{% url 'export_data' %}" class="btn rounded btn-primary btn-sm text-white">Export</a>
+                    <h4 class="btn btn-sm ">
+                        {% if record_file_count == 0 %}
+                            No Records Found
+                        {% elif record_file_count == 1 %}
+                            1 Record Found
+                        {% else %}
+                            {{ record_file_count }} Records Found
+                        {% endif %}
+                    </h4>
                 </div>
               </div>
             </div>
@@ -413,7 +411,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for new_record in new_records %}
+                {% for new_record in record_file %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
                   <td>{{ new_record.accusor_name }}</td>

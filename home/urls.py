@@ -9,6 +9,9 @@ urlpatterns = [
     path('sidenavcreate/', views.sidenavcreate, name='sidenavcreate'),
     path('folder/', views.create_folder, name='folder'),
     path('create_file/', views.create_file, name='create_file'),
+    path('edit_file/<int:pk>/', views.edit_file, name='edit_file'),
+    path('delete_file/<int:pk>/', views.delete_file, name='delete_file'),
+
 
     path('import_data/', views.import_data, name='import_data'),
     path('export_data/', views.export_data, name='export_data'),
@@ -20,6 +23,8 @@ urlpatterns = [
     path('manage_user/', views.manage_user, name='manage_user'),
     path('remove_user/<int:pk>/', views.remove_user, name='remove_user'),
     path('edit_user/<int:pk>/', views.edit_user, name='edit_user'),
+    path('search/', views.global_search, name='global_search'),
+
 
 
 

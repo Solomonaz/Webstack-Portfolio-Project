@@ -47,15 +47,13 @@ class Account(AbstractBaseUser):
             ('user', 'User'),
         )
 
-        
-
 
     first_name      =models.CharField(max_length=50)
     last_name       =models.CharField(max_length=50)
     username        =models.CharField(max_length=50, unique= True)
     email           =models.EmailField(max_length=50, unique=True)
     phone_number    =models.CharField(max_length=50)
-    role           =models.CharField(max_length=20, choices=ROLES, default='admi')
+    role           =models.CharField(max_length=20, choices=ROLES, default='admin')
 
     # required fields
 

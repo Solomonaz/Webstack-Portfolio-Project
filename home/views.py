@@ -21,22 +21,18 @@ from django.db.models import Q
 
 @login_required(login_url="/login/")
 def index(request):
-    new_records = TableFile.objects.all()
-    new_records_count = new_records.count()
+    pdf_count = File.objects.filter(file__icontains='.pdf').count()
+    excel_count = File.objects.filter(file__icontains='.xlsx').count()
+    video_count = File.objects.filter(file__icontains='.mp4').count()
+    audio_count = File.objects.filter(file__icontains='.mp3').count() + File.objects.filter(file__icontains='.wav').count()
 
-    files = File.objects.all()
-    files_count = files.count()
-
-    paginator = Paginator(new_records, 10)
-    page_number = request.GET.get('page')
-    new_records = paginator.get_page(page_number)
 
     context = {
         'segment': 'index', 
-        'new_records':new_records,
-        'new_records_count':new_records_count,
-        'files':files,
-        'files_count':files_count,
+        'pdf_count':pdf_count,
+        'excel_count':excel_count,
+        'video_count':video_count,
+        'audio_count':audio_count,
         }
 
     html_template = loader.get_template('index.html')
@@ -102,7 +98,7 @@ def create_file(request):
 
             instance.save()
             messages.success(request, 'Data added successfully!')
-            return redirect('/')
+            return redirect('file_list')
         else:
             messages.error(request, 'Data not valid. Please check the form.')
     else:
@@ -113,13 +109,27 @@ def create_file(request):
     }
     return render(request, 'pages/file.html', context)
 
+def file_list(request):
+    files = File.objects.all()
+    files_count = files.count()
+
+    paginator = Paginator(files, 10)
+    page_number = request.GET.get('page')
+    files = paginator.get_page(page_number)
+
+    context = {
+        'files':files,
+        'files_count':files_count,
+        }
+    return render(request, 'pages/file-list.html', context)
+
 def edit_file(request, pk):
     record_edit_model = File.objects.get(id=pk)
     form_file = FileForm(request.POST or None, instance=record_edit_model)
     if form_file.is_valid():
         form_file.save()
         messages.success(request, ' You have updated a file.')
-        return redirect('/')
+        return redirect('file_list')
         
     context = {
         'form_file':form_file,
@@ -129,7 +139,7 @@ def edit_file(request, pk):
 def delete_file(reques, pk):
     data_removed = File.objects.get(id=pk)
     data_removed.delete()
-    return redirect('/')
+    return redirect('file_list')
 
 # export data
 @login_required(login_url="/login/")
@@ -180,7 +190,7 @@ def add_data(request):
             # form_data = form.save(commit=False)
             # form_data.save()
             messages.success(request, 'data added sucessfully!')
-            return redirect('/')
+            return redirect('records')
     else:
         form = TableFileForm()
     context = {
@@ -188,10 +198,28 @@ def add_data(request):
     }
     return render(request, 'pages/add_data.html', context)   
 
+
+def record(request):
+    new_records = TableFile.objects.all()
+    new_records_count = new_records.count()
+
+    paginator = Paginator(new_records, 10)
+    page_number = request.GET.get('page')
+    new_records = paginator.get_page(page_number)
+
+    context = { 
+        'new_records':new_records,
+        'new_records_count':new_records_count,
+        }
+
+    return render(request, 'pages/records.html', context)
+
+
+
 def remove_data(request, pk):
     data_removed = TableFile.objects.get(id=pk)
     data_removed.delete()
-    return redirect('/')
+    return redirect('records')
 
 def edit_data(request, pk):
     record_edit_model = TableFile.objects.get(id=pk)
@@ -199,7 +227,7 @@ def edit_data(request, pk):
     if record_edit_form.is_valid():
         record_edit_form.save()
         messages.success(request, ' You have updated a record.')
-        return redirect('/')
+        return redirect('records')
         
     context = {
         'form':record_edit_form
@@ -256,3 +284,14 @@ def global_search(request):
     }
 
     return render(request, 'pages/search.html', context)
+
+
+# def index(request):
+#     datapoints = [
+#         { "label": "Online Store",  "y": 27  },
+#         { "label": "Offline Store", "y": 25  },        
+#         { "label": "Discounted Sale",  "y": 30  },
+#         { "label": "B2B Channel", "y": 8  },
+#         { "label": "Others",  "y": 10  }
+#     ]
+#     return render(request, 'index.html', { "datapoints" : datapoints })   

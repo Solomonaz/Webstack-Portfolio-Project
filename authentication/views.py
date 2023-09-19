@@ -31,33 +31,6 @@ def login_view(request):
 
     return render(request, "accounts/login.html")
 
-# @login_required(login_url='/login')
-# def register_user(request):
-#     msg = None
-#     success = False
-
-#     if request.method == "POST":
-#         form = SignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data.get("username")
-#             raw_password = form.cleaned_data.get("password1")
-#             user = authenticate(username=username, password=raw_password)
-#             return redirect("index")
-        
-#             # msg = 'User created'
-#             # success = True
-
-#         else:
-#             msg = 'Form is not valid'
-#     else:
-#         form = SignUpForm()
-
-    # return render(request, "pages/add-user.html", {"form": form, "msg": msg, "success": success})
-    # return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
-
-
-
 def register_user(request):
     if request.method =='POST':
         form = RegistrationForm(request.POST)
@@ -85,7 +58,7 @@ def register_user(request):
             current_site = get_current_site(request)
 
             messages.success(request, "Successfully registered!")
-            return redirect('/')
+            return redirect('manage_user')
     else:
         form = RegistrationForm()
     context = {

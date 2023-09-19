@@ -8,7 +8,9 @@ urlpatterns = [
     path('register/', register_user, name="register"),
     path('sidenavcreate/', views.sidenavcreate, name='sidenavcreate'),
     path('folder/', views.create_folder, name='folder'),
+
     path('create_file/', views.create_file, name='create_file'),
+    path('file_list/', views.file_list, name='file_list'),
     path('edit_file/<int:pk>/', views.edit_file, name='edit_file'),
     path('delete_file/<int:pk>/', views.delete_file, name='delete_file'),
 
@@ -16,6 +18,7 @@ urlpatterns = [
     path('import_data/', views.import_data, name='import_data'),
     path('export_data/', views.export_data, name='export_data'),
     path('add_data/', views.add_data, name='add_data'),
+    path('record/', views.record, name='records'),
 
     path('remove_data/<int:pk>/', views.remove_data, name='remove_data'),
     path('edit_data/<int:pk>/', views.edit_data, name='edit_data'),

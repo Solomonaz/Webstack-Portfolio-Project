@@ -11,7 +11,20 @@
 <div class="container-fluid mt-3">
   <div class="card">
     <div class="card-body">
-      <h5 class="font-size-16 me-3 mb-0">Dashboard</h5>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="order-1">
+          <h5 class="font-size-16 me-3 mb-0">Dashboard</h5>
+        </div>
+        <div class="order-2">
+          {% if total_count == 0 %}
+          No Files Found
+          {% elif total_count == 1 %}
+          1 Total File Found
+          {% else %}
+          {{ total_count }} Total Files Found
+          {% endif %}
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="container-fluid mt-3">
           <div class="row">
@@ -70,19 +83,34 @@
                 </div>
               </div>
             </div>
-             <div class="col-xl-3 col-md-6">
+
+            <div class="col-xl-3 col-md-6">
               <div class="card bg-danger text-white">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <i class="fas fa-image fa-3x"></i>
                     <div class="text-right">
                       <h5 class="card-title">Images</h5>
-                      <p class="card-text">{{ image_count }} Images</p>
+                      <p class="card-text">{{ image_count }} Files</p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>           
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-file-word fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">Words</h5>
+                      <p class="card-text">{{ word_count }} File</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>

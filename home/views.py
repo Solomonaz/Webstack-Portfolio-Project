@@ -16,16 +16,33 @@ from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from collections import Counter
 
 
 
 @login_required(login_url="/login/")
 def index(request):
+   
     pdf_count = File.objects.filter(file__icontains='.pdf').count()
     excel_count = File.objects.filter(file__icontains='.xlsx').count()
     video_count = File.objects.filter(file__icontains='.mp4').count()
-    audio_count = File.objects.filter(file__icontains='.mp3').count() + File.objects.filter(file__icontains='.wav').count()
-    image_count = File.objects.filter(file__icontains='.png').count() +  File.objects.filter(file__icontains='.jpeg').count() +  File.objects.filter(file__icontains='.jpg').count()
+    audio_count = (
+        File.objects.filter(file__icontains='.mp3').count() +
+        File.objects.filter(file__icontains='.wav').count()
+    )
+    image_count = (
+        File.objects.filter(file__icontains='.png').count() +
+        File.objects.filter(file__icontains='.jpeg').count() +
+        File.objects.filter(file__icontains='.jpg').count()
+    )
+
+    word_count = (
+        File.objects.filter(file__icontains='.doc').count()  
+    )
+
+    total_count = (
+        pdf_count + excel_count + video_count + audio_count + image_count + word_count
+    )
 
 
     context = {
@@ -35,6 +52,8 @@ def index(request):
         'video_count':video_count,
         'audio_count':audio_count,
         'image_count':image_count,
+        'word_count':word_count,
+        'total_count':total_count,
         }
 
     html_template = loader.get_template('index.html')

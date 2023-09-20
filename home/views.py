@@ -16,7 +16,8 @@ from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
-from collections import Counter
+
+
 
 
 
@@ -58,7 +59,6 @@ def index(request):
 
     html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
-
 
 
 @login_required(login_url="/login/")

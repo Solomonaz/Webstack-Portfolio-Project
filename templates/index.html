@@ -143,10 +143,43 @@
     </div>
   </div>
 </div>
+<div class="container-fluid">
+  <canvas id="fileFormatChart" width="400" height="400"></canvas>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const ctx = document.getElementById('fileFormatChart').getContext('2d');
+      const data = {
+          labels: ['PDF', 'Excel', 'Audio', 'Video'],
+          datasets: [{
+            data: [30, 20, 15, 10, 25],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.7)',
+                  'rgba(54, 162, 235, 0.7)',
+                  'rgba(255, 206, 86, 0.7)',
+                  'rgba(75, 192, 192, 0.7)',
+                  'rgba(153, 102, 255, 0.7)',
+              ],
+          }],
+      };
+
+      new Chart(ctx, {
+          type: 'pie',
+          data: data,
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+          },
+      });
+  });
+</script>
+
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
 <!-- <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
 <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>

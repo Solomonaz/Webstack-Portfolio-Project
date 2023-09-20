@@ -7,101 +7,102 @@
 
 {% block content %}
 
-<!-- Header -->
-<!-- Page content -->
+
 <div class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card">
-        <div class="card-body">
-
-
-          <h5 class="font-size-16 me-3 mb-0">Dashboard</h5>
-          <div class="row mt-4">
-
-
-            <div class="container-fluid mt-3">
-              <div class="row">
-                <!-- Dashboard Cards -->
-                <div class="col-xl-3 col-md-6">
-                  <div class="card bg-primary text-white">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-file-pdf fa-3x"></i>
-                        <div class="text-right">
-                          <h5 class="card-title">PDF Files</h5>
-                          <p class="card-text">{{ pdf_count }} Files</p>
-                        </div>
-                      </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="font-size-16 me-3 mb-0">Dashboard</h5>
+      <div class="row mt-4">
+        <div class="container-fluid mt-3">
+          <div class="row">
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-file-pdf fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">PDF Files</h5>
+                      <p class="card-text">{{ pdf_count }} Files</p>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-xl-3 col-md-6">
-                  <div class="card bg-success text-white">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-file-excel fa-3x"></i>
-                        <div class="text-right">
-                          <h5 class="card-title">Excel Files</h5>
-                          <p class="card-text">{{ excel_count }} Files</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                  <div class="card bg-info text-white">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-file-audio fa-3x"></i>
-                        <div class="text-right">
-                          <h5 class="card-title">Audio Files</h5>
-                          <p class="card-text">{{ audio_count }} Files</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                  <div class="card bg-warning text-dark">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-video fa-3x"></i>
-                        <div class="text-right">
-                          <h5 class="card-title">Video Files</h5>
-                          <p class="card-text">{{ video_count }} Files</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Dashboard Cards -->
               </div>
-
-
-
             </div>
-          </div>
 
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-file-excel fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">Excel Files</h5>
+                      <p class="card-text">{{ excel_count }} Files</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-file-audio fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">Audio Files</h5>
+                      <p class="card-text">{{ audio_count }} Files</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-warning text-dark">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-video fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">Video Files</h5>
+                      <p class="card-text">{{ video_count }} Files</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <div class="col-xl-3 col-md-6">
+              <div class="card bg-danger text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-image fa-3x"></i>
+                    <div class="text-right">
+                      <h5 class="card-title">Images</h5>
+                      <p class="card-text">{{ image_count }} Images</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>           
+
+          </div>
         </div>
       </div>
 
     </div>
-    {% endblock content %}
+  </div>
+</div>
+{% endblock content %}
 
-    <!-- Specific JS goes HERE -->
-    {% block javascripts %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
 
-    <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
-    <!-- Add these script tags to your HTML file -->
+<!-- Add these script tags to your HTML file -->
 
 
 
-    {% endblock javascripts %}
+{% endblock javascripts %}

@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
-from authentication.views import login_view, logout_view, register_user
+from authentication.views import login_view, logout_view, register_user, profile
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name="logout"),
     path('register/', register_user, name="register"),
+    path('profile/', profile, name="profile"),
+
     path('sidenavcreate/', views.sidenavcreate, name='sidenavcreate'),
     path('folder/', views.create_folder, name='folder'),
 

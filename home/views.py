@@ -25,6 +25,7 @@ def index(request):
     excel_count = File.objects.filter(file__icontains='.xlsx').count()
     video_count = File.objects.filter(file__icontains='.mp4').count()
     audio_count = File.objects.filter(file__icontains='.mp3').count() + File.objects.filter(file__icontains='.wav').count()
+    image_count = File.objects.filter(file__icontains='.png').count() +  File.objects.filter(file__icontains='.jpeg').count() +  File.objects.filter(file__icontains='.jpg').count()
 
 
     context = {
@@ -33,6 +34,7 @@ def index(request):
         'excel_count':excel_count,
         'video_count':video_count,
         'audio_count':audio_count,
+        'image_count':image_count,
         }
 
     html_template = loader.get_template('index.html')

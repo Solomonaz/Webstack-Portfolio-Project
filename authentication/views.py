@@ -67,6 +67,26 @@ def register_user(request):
     return render(request, 'pages/add-user.html', context)
 
 
+@login_required
+def profile(request):
+    user = request.user
+    username = user.username
+    email = user.email
+    full_name = user.full_name
+    phone_number = user.phone_number
+    role = user.role
+
+    context = {
+        'user': user,
+        'username': username,
+        'email': email,
+        'full_name':full_name,
+        'phone_number':phone_number,
+        'role':role,
+
+    }
+
+    return render(request, 'pages/profile.html', context)
 
 login_required(login_url='/login')
 @never_cache

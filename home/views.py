@@ -155,9 +155,10 @@ def edit_file(request, pk):
     }
     return render(request, 'pages/edit-file.html', context)
 
-def delete_file(reques, pk):
+def delete_file(request, pk):
     data_removed = File.objects.get(id=pk)
     data_removed.delete()
+    messages.success(request, 'File removed!')
     return redirect('file_list')
 
 # export data
@@ -196,6 +197,7 @@ def import_data(request):
 
             )
             value.save()
+            messages.success(request, 'You have imported records!')
             return redirect('/')
     return render(request, 'pages/import.html')
 
@@ -264,6 +266,7 @@ def manage_user(request):
 def remove_user(request, pk):
     user_removed = Account.objects.get(id=pk)
     user_removed.delete()
+    messages.success(request, 'File removed!')
     return redirect('manage_user')
 
 def edit_user(request, pk):

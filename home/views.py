@@ -46,6 +46,9 @@ def index(request):
     )
 
 
+    xdata = ["pdf", "excel", "video", "audio", "image", "word"]
+    ydata = [pdf_count, excel_count, video_count, audio_count, image_count, word_count]
+
     context = {
         'segment': 'index', 
         'pdf_count':pdf_count,
@@ -55,6 +58,8 @@ def index(request):
         'image_count':image_count,
         'word_count':word_count,
         'total_count':total_count,
+        'xdata':xdata,
+        'ydata':ydata
         }
 
     html_template = loader.get_template('index.html')
@@ -293,7 +298,7 @@ def global_search(request):
         record_file_count = record_file.count()
 
         file_results = File.objects.filter(
-            Q(uploaded_by__icontains=query) | Q(file_name__icontains=query))
+            Q(uploaded_by__icontains=query) | Q(file_name__icontains=query) | Q(file__icontains=query))
         file_results_count = file_results.count()
 
     context = {
@@ -306,13 +311,3 @@ def global_search(request):
 
     return render(request, 'pages/search.html', context)
 
-
-# def index(request):
-#     datapoints = [
-#         { "label": "Online Store",  "y": 27  },
-#         { "label": "Offline Store", "y": 25  },        
-#         { "label": "Discounted Sale",  "y": 30  },
-#         { "label": "B2B Channel", "y": 8  },
-#         { "label": "Others",  "y": 10  }
-#     ]
-#     return render(request, 'index.html', { "datapoints" : datapoints })   

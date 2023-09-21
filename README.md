@@ -127,3 +127,11 @@ python manage.py runserver
 python3 manage.py runserver
 ```
 Now, you can access your application at http://localhost:8000/ in your web browser.
+
+###### Built with
+* [Django]
+* [Javascript]
+* [Bootstrap]
+* [html]
+* [css]
+

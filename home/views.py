@@ -1,7 +1,7 @@
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404, HttpResponseServerError
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from django.contrib import messages
@@ -17,7 +17,8 @@ import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-
+import os
+from django.conf import settings
 
 
 
@@ -310,4 +311,15 @@ def global_search(request):
     }
 
     return render(request, 'pages/search.html', context)
+
+def download_file(request, file_id):
+    uploaded_file = get_object_or_404(File, id=file_id)
+    file_path = uploaded_file.file.path
+    try:
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename=' + uploaded_file.file.name.split('/')[-1]
+            return response
+    except FileNotFoundError:
+        raise Http404("File not found")
 

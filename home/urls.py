@@ -30,6 +30,8 @@ urlpatterns = [
     path('edit_user/<int:pk>/', views.edit_user, name='edit_user'),
     path('search/', views.global_search, name='global_search'),
 
+    path('download/<int:file_id>/', views.download_file, name='download_file'),
+
 
 
 

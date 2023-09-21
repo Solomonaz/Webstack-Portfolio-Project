@@ -79,6 +79,7 @@
                     <a class="dropdown-item" href="{% url 'edit_file' file.id %}">Edit</a>
                     <a class="dropdown-item" href="{% url 'delete_file' file.id %}"
                       onclick="return confirm('Are you sure you want to delete this file?')">Remove</a>
+                      <a href="{% url 'download_file' file.id %}" class="dropdown-item">Download</a>
                   </div>
                 </div>
               </td>

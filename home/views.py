@@ -1,6 +1,6 @@
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
@@ -17,10 +17,6 @@ import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-import os
-from django.conf import settings
-
-
 
 @login_required(login_url="/login/")
 def index(request):
@@ -28,6 +24,9 @@ def index(request):
     pdf_count = File.objects.filter(file__icontains='.pdf').count()
     excel_count = File.objects.filter(file__icontains='.xlsx').count()
     video_count = File.objects.filter(file__icontains='.mp4').count()
+    word_count = File.objects.filter(file__icontains='.doc').count()  
+    ppt_count = File.objects.filter(file__icontains='.ppt').count()  
+
     audio_count = (
         File.objects.filter(file__icontains='.mp3').count() +
         File.objects.filter(file__icontains='.wav').count()
@@ -38,17 +37,11 @@ def index(request):
         File.objects.filter(file__icontains='.jpg').count()
     )
 
-    word_count = (
-        File.objects.filter(file__icontains='.doc').count()  
-    )
+
 
     total_count = (
-        pdf_count + excel_count + video_count + audio_count + image_count + word_count
+        pdf_count + excel_count + video_count + audio_count + image_count + word_count + ppt_count
     )
-
-
-    xdata = ["pdf", "excel", "video", "audio", "image", "word"]
-    ydata = [pdf_count, excel_count, video_count, audio_count, image_count, word_count]
 
     context = {
         'segment': 'index', 
@@ -59,8 +52,7 @@ def index(request):
         'image_count':image_count,
         'word_count':word_count,
         'total_count':total_count,
-        'xdata':xdata,
-        'ydata':ydata
+        'ppt_count': ppt_count,
         }
 
     html_template = loader.get_template('index.html')
@@ -323,3 +315,33 @@ def download_file(request, file_id):
     except FileNotFoundError:
         raise Http404("File not found")
 
+
+def show_files_by_type(request, file_type):
+    supported_file_types = {
+        'pdf': '.pdf',
+        'excel': '.xlsx',
+        'video': '.mp4',
+        'audio': ['.mp3', '.wav'],
+        'image': ['.png', '.jpeg', '.jpg'],
+        'word': '.docx',
+        'ppt':'.ppt',
+    }
+
+    if file_type not in supported_file_types:
+        return render(request, 'error.html', {'message': 'Unsupported file type'})
+
+    extension = supported_file_types[file_type]
+
+    files = File.objects.filter(file__iendswith=extension)
+
+    file_counts = {}
+    for type_key, type_extension in supported_file_types.items():
+        file_counts[type_key] = File.objects.filter(file__iendswith=type_extension).count()
+    
+    context = {
+        'files': files,
+        'file_type': file_type, 
+        'file_counts': file_counts
+        }
+
+    return render(request, 'pages/file_type.html', context)

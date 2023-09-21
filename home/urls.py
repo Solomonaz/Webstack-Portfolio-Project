@@ -32,6 +32,13 @@ urlpatterns = [
 
     path('download/<int:file_id>/', views.download_file, name='download_file'),
 
+    path('pdf/', views.show_files_by_type, {'file_type': 'pdf'}, name='show_pdf_files'),
+    path('excel/', views.show_files_by_type, {'file_type': 'excel'}, name='show_excel_files'),
+    path('word/', views.show_files_by_type, {'file_type': 'word'}, name='show_word_files'),
+    path('audio/', views.show_files_by_type, {'file_type': 'audio'}, name='show_audio_files'),
+    path('video/', views.show_files_by_type, {'file_type': 'video'}, name='show_video_files'),
+    path('image/', views.show_files_by_type, {'file_type': 'image'}, name='show_image_files'),
+    path('ppt/', views.show_files_by_type, {'file_type': 'ppt'}, name='show_ppt_files'),
 
 
 

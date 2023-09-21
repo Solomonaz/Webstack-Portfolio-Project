@@ -79,7 +79,7 @@ python3 -m venv env
 ```shell
  source env/bin/activate
 ```
-### Step 2: Activate a Virtual Environment
+### Step 3:  Install Dependencies
 
 #### Install requirements.txt:
 
@@ -91,4 +91,39 @@ python3 -m venv env
 ```shell
  pip3 install -r requirements.txt
 ```
+### step 4: Run Migrations
 
+#### Windows:
+```shell 
+python manage.py makemigrations
+python manage.py migrate
+
+```
+#### Linux and Mac:
+```shell 
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+```
+### step 5: Create a Superuser
+
+#### Windows:
+```shell 
+python manage.py createsuperuser
+
+```
+#### Linux and Mac:
+```shell 
+python3 manage.py createsuperuser
+
+```
+### step 6: Start the Development Server
+#### Windows:
+```shell 
+python manage.py runserver
+```
+#### Linux and Mac:
+```shell 
+python3 manage.py runserver
+```
+Now, you can access your application at http://localhost:8000/ in your web browser.

@@ -44,6 +44,7 @@
                                     <th>Phone Number</th>
                                     <th>Email</th>
                                     <th>Role</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -55,6 +56,9 @@
                                     <td>{{account.phone_number}}</td>
                                     <td>{{account.email}}</td>
                                     <td>{{account.role}}</td>
+                                   <td class="{% if user.is_active %}text-success{% else %}text-muted{% endif %}">
+                                    {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                                   </td>
                                     <td>
                                         <div class="dropdown">
                                             <a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button"

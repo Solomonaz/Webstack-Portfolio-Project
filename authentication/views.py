@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
@@ -8,10 +7,7 @@ from django.views.decorators.cache import never_cache
 from .models import Account
 from .forms import RegistrationForm
 from django.contrib import messages, auth
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
-from django.template.loader import render_to_string  
- 
+
 
 # @never_cache
 def login_view(request):
@@ -41,7 +37,7 @@ def register_user(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = email.split("@")[0]
-            role = form.cleaned_data['role']  # Get the role from the form
+            role = form.cleaned_data['role']
 
             # Create the user with the specified role
             user = Account.objects.create_user(
@@ -51,11 +47,8 @@ def register_user(request):
                 username=username,
                 password=password,
                 phone_number=phone_number,
-                role=role  # Assign the role to the user
+                role=role 
             )
-
-            # email verification
-            current_site = get_current_site(request)
 
             messages.success(request, "Successfully registered!")
             return redirect('manage_user')

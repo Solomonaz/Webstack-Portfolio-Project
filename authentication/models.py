@@ -82,12 +82,3 @@ class Account(AbstractBaseUser):
     
     def has_module_perms(self, add_label):
         return True
-
-# class FilePermissions(models.Model):
-#     class Meta:
-#         managed = False   
-#         default_permissions = ()   
-
-#     can_add_file = Permission.objects.get(codename='can_add_file')
-#     can_edit_file = Permission.objects.get(codename='can_edit_file')
-#     can_delete_file = Permission.objects.get(codename='can_delete_file')

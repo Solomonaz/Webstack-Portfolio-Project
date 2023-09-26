@@ -7,72 +7,71 @@
 
 {% block content %}
 
-
-<section style="background-color: #eee;">
-    <div class="container py-5">
-      <div class="row">
-        <div class="col">
-          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-            <ol class="breadcrumb mb-0">
-              <!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">User</a></li> -->
-              <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-  
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="card mb-4">
-            <div class="card-body text-center">
-              <img src="/static/assets/img/brand/officelogo.png" alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3">{{full_name}}</h5>
-              <p class="text-muted mb-1">{{role}}</p>
-              <p class="text-muted mb-4">Lideta Subcity</p>
-            </div>
-          </div>
-          
-        </div>
-        <div class="col-lg-8">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Full Name</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{full_name}}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{email}}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Phone</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{phone_number}}</p>
-                </div>
-              </div>
-              <hr>
-
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </section>
+ <section style="background-color: #eee;">
+     <div class="container py-5">
+         <div class="row">
+             <div class="col">
+                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                     <ol class="breadcrumb mb-0">
+                         <!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
+                         <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                         <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                     </ol>
+                 </nav>
+             </div>
+         </div>
+ 
+         <div class="row">
+             <div class="col-lg-4">
+                 <div class="card mb-4">
+                     <div class="card-body text-center">
+                         <img id="profile-image" src="/static/assets/img/brand/officelogo.png" alt="avatar"
+                              class="rounded-circle img-fluid" style="width: 150px;">
+                         <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                         <label for="image-upload" class="btn btn-primary mt-3">Upload Image</label>
+                         <h5 class="my-3">{{full_name}}</h5>
+                         <p class="text-muted mb-1">{{role}}</p>
+                         <p class="text-muted mb-4">Lideta Subcity</p>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-8">
+                 <div class="card mb-4">
+                     <div class="card-body">
+                         <div class="row">
+                             <div class="col-sm-3">
+                                 <p class="mb-0">Full Name</p>
+                             </div>
+                             <div class="col-sm-9">
+                                 <p class="text-muted mb-0">{{full_name}}</p>
+                             </div>
+                         </div>
+                         <hr>
+                         <div class="row">
+                             <div class="col-sm-3">
+                                 <p class="mb-0">Email</p>
+                             </div>
+                             <div class="col-sm-9">
+                                 <p class="text-muted mb-0">{{email}}</p>
+                             </div>
+                         </div>
+                         <hr>
+                         <div class="row">
+                             <div class="col-sm-3">
+                                 <p class="mb-0">Phone</p>
+                             </div>
+                             <div class="col-sm-9">
+                                 <p class="text-muted mb-0">{{phone_number}}</p>
+                             </div>
+                         </div>
+                         <hr>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </section>
+ 
 
 
 
@@ -82,10 +81,30 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 
-<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
-<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
-<!-- Add these script tags to your HTML file -->
 
+ <script>
+const imageUpload = document.getElementById('image-upload');
+const profileImage = document.getElementById('profile-image');
+
+const storedImage = localStorage.getItem('profileImage');
+if (storedImage) {
+  profileImage.src = storedImage;
+}
+
+imageUpload.addEventListener('change', function () {
+    const selectedImage = this.files[0];
+    if (selectedImage) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            profileImage.src = e.target.result;
+
+            localStorage.setItem('profileImage', e.target.result);
+        };
+        reader.readAsDataURL(selectedImage);
+    }
+});
+
+ </script>
 
 
 {% endblock javascripts %}

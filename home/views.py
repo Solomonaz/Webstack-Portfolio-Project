@@ -9,13 +9,14 @@ from . forms import SidenavForm, TableFileForm, FileForm
 from . models import TableFile, File
 from authentication.models import Account
 from authentication.forms import RegistrationForm
-
-
+from .models import Activity
+from django.contrib.admin.views.decorators import staff_member_required
 from tablib import Dataset
 from . resources import TableFileResource
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db import IntegrityError
 
 
 @login_required(login_url="/login/")
@@ -42,7 +43,7 @@ def index(request):
     total_count = (
         pdf_count + excel_count + video_count + audio_count + image_count + word_count + ppt_count
     )
-
+    recent_files = Activity.objects.all()
     context = {
         'segment': 'index', 
         'pdf_count':pdf_count,
@@ -53,6 +54,7 @@ def index(request):
         'word_count':word_count,
         'total_count':total_count,
         'ppt_count': ppt_count,
+        'recent_files':recent_files,
         }
 
     html_template = loader.get_template('index.html')
@@ -102,7 +104,13 @@ def sidenavcreate(request):
 
 def create_folder(request):
     return render(request, 'pages/folder.html')
-
+def sidenav(request):
+    user = request.user
+    role = user.role
+    context = {
+        'role':role,
+    }
+    return render (request,'includes/sidenav.html', context)
 
 def create_file(request):
     if request.method == 'POST':
@@ -145,33 +153,62 @@ def file_list(request):
 def edit_file(request, pk):
     record_edit_model = File.objects.get(id=pk)
     form_file = FileForm(request.POST or None, instance=record_edit_model)
-    if form_file.is_valid():
-        form_file.save()
-        messages.success(request, ' You have updated a file.')
-        return redirect('file_list')
-        
+    
+    if request.method == 'POST':
+        if form_file.is_valid():
+            activity = Activity(
+                file_name=record_edit_model.file_name,
+                action=f'File {record_edit_model.file_name} Edited',
+                uploaded_by=record_edit_model.uploaded_by,
+                file=record_edit_model.file,
+                modified_by=request.user.username,
+            )
+            activity.save()
+            form_file.save()
+            messages.success(request, 'You have updated the file.')
+            return redirect('file_list')
+
     context = {
-        'form_file':form_file,
+        'form_file': form_file,
     }
     return render(request, 'pages/edit-file.html', context)
 
+
 def delete_file(request, pk):
     data_removed = File.objects.get(id=pk)
+
+    activity = Activity(
+        file_name = data_removed.file_name,
+        action = f'file {data_removed.file_name} removed ',
+        uploaded_by = data_removed.uploaded_by,
+        file = data_removed.file,
+        modified_by = request.user.username,
+        )
+    activity.save()
+
     data_removed.delete()
     messages.success(request, 'File removed!')
     return redirect('file_list')
 
-# export data
+
 @login_required(login_url="/login/")
 def export_data(request):
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    person_resource = TableFileResource()
-    dataset = person_resource.export()
-    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = f'attachment; filename="file_{timestamp}.xls"'
-    return response
+    try:
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
+        person_resource = TableFileResource()
+        dataset = person_resource.export()
 
-# import excell file
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="file_{timestamp}.xls"'
+        response.write(dataset.xls)
+
+        return response
+    except Exception as e:
+        messages.error(request, f'Error exporting data: {str(e)}')
+        return redirect('your_error_view')
+
+
+
 @login_required(login_url="/login/")
 def import_data(request):
     if request.method == 'POST':
@@ -179,39 +216,47 @@ def import_data(request):
         dataset = Dataset()
         new_person = request.FILES['import_data']
         imported_data = dataset.load(new_person.read(), format='xlsx')
-        for data in imported_data:
-            value = TableFile(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6],
-                data[7],
-                data[8],
-                data[9],
-                data[10],
-                data[11],
-                # data[12],
 
-            )
-            value.save()
-            messages.success(request, 'You have imported records!')
-            return redirect('/')
+        for data in imported_data:
+            if len(data) != 12:
+                messages.error(request, 'Invalid data format. Please check the Excel file.')
+                return redirect('import_data')
+            try:
+                value = TableFile(
+                    id = data[0] if data[0] else None,
+                    accusor_name = data[1] if data[1] else None,
+                    defendent_name = data[2] if data[2] else None,
+                    house_number = data[3] if data[3] else None,
+                    id_number = data[4] if data[4] else None,
+                    court_house = data[5] if data[5] else None,
+                    debate_type = data[6] if data[6] else None,
+                    date_archive_initiated = data[7] if data[7] else None,
+                    date_court_decision_made = data[8] if data[8] else None,
+                    date_court_decision_copy_sent = data[9] if data[9] else None,
+                    status = data[10] if data[10] else None,
+                    prosecutor = data[11] if data[10] else None,
+                )
+                value.save()
+            except IntegrityError as e:
+                messages.error(request, f'Error importing data: {str(e)}')
+                return redirect('import_data')
+
+        messages.success(request, 'You have imported records!')
+        return redirect('records')
+
     return render(request, 'pages/import.html')
+
 
 @login_required(login_url="/login/")
 def add_data(request):
     if request.method == 'POST':
         form = TableFileForm(request.POST)
-        # print(form.data)
         if form.is_valid():
             form.save()
-            # form_data = form.save(commit=False)
-            # form_data.save()
             messages.success(request, 'data added sucessfully!')
             return redirect('records')
+        else:
+            messages.error(request, 'Please fill the data based on the formate!')
     else:
         form = TableFileForm()
     context = {
@@ -263,22 +308,37 @@ def manage_user(request):
     }
     return render(request, 'pages/manage-user.html',context)
 
+@login_required
 def remove_user(request, pk):
     user_removed = Account.objects.get(id=pk)
+    if request.user != user_removed and request.user.role !='admin':
+        messages.warning(request, "You don't have the right permission to remove this user")
+        return redirect('manage_user')
+    
     user_removed.delete()
     messages.success(request, 'File removed!')
     return redirect('manage_user')
 
+@login_required
 def edit_user(request, pk):
-    record_edit_model = Account.objects.get(id=pk)
-    record_edit_form = RegistrationForm(request.POST or None, instance=record_edit_model)
-    if record_edit_form.is_valid():
-        record_edit_form.save()
-        messages.success(request, ' You have updated a user.')
+    record_edit_model = get_object_or_404(Account, id=pk)
+
+    if request.user != record_edit_model and request.user.role !='admin':
+        messages.success(request, "You don't have the right permission to edit user")
         return redirect('manage_user')
-        
+
+    if request.method == 'POST':
+        record_edit_form = RegistrationForm(request.POST, instance=record_edit_model)
+        if record_edit_form.is_valid():
+            record_edit_form.save()
+            messages.success(request, 'You have updated your profile.')
+            return redirect('manage_user')
+
+    else:
+        record_edit_form = RegistrationForm(instance=record_edit_model)
+
     context = {
-        'form':record_edit_form
+        'form': record_edit_form,
     }
     return render(request, 'pages/edit-user.html', context)
 
@@ -348,3 +408,11 @@ def show_files_by_type(request, file_type):
         }
 
     return render(request, 'pages/file_type.html', context)
+
+
+
+
+
+
+
+

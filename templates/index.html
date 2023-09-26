@@ -161,6 +161,58 @@
     </div>
   </div>
 </div>
+<div class="container-fluid">
+  <h3 class="mb-4 text-gray-800 text-center mt-3">Recent Activities</h3>
+  <div class="card mt-3">
+    <div class="card-header text-dark">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="m-0 order-1 text-dark">
+          {% if files_count == 0 %}
+          No Files Found
+          {% elif files_count == 1 %}
+          1 File Found
+          {% else %}
+          {{ files_count }} Files Found
+          {% endif %}
+        </h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>No.</th>
+              <th>File Name</th>
+              <th>Uploaded By</th>
+              <th>Modified By</th>
+              <th>Modified Date</th>
+              <th>Activities</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for recents in recent_files %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{recents.file_name}}</td>
+              <td>{{recents.uploaded_by}}</td>
+              <td>{{recents.modified_by}}</td>
+              <td>{{recents.date_modified}}</td>
+              <td>{{recents.action}}</td>
+              <td>
+                <a href="" class="btn btn-sm btn-primary">Restore</a>
+                <a href="" onclick="return confirm('Are you sure you want to clear this file?')" class="btn btn-sm btn-danger">Clear</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->

@@ -26,6 +26,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow">
+                {% if request.user.is_authenticated and request.user.role == 'admin' %}
                 <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="m-0">Manage Users</h3>
@@ -34,6 +35,7 @@
                         </a>
                     </div>
                 </div>
+                {% endif %}
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -56,8 +58,8 @@
                                     <td>{{account.phone_number}}</td>
                                     <td>{{account.email}}</td>
                                     <td>{{account.role}}</td>
-                                   <td class="{% if user.is_active %}text-success{% else %}text-muted{% endif %}">
-                                    {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                                   <td class="{% if account.is_active %}text-success{% else %}text-muted{% endif %}">
+                                    {% if account.is_active %}Active{% else %}In Active{% endif %}
                                    </td>
                                     <td>
                                         <div class="dropdown">
@@ -92,11 +94,5 @@
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
-
-<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
-<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
-<!-- Add these script tags to your HTML file -->
-
-
 
 {% endblock javascripts %}

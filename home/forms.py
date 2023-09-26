@@ -130,13 +130,3 @@ class TableFileForm(forms.ModelForm):
             "class": "form-control"
         }
     ))
-
-# class CustomUserCreationForm(UserCreationForm):
-#     class Meta:
-#         model = CustomUser
-#         fields = '__all__'
-
-# class CustomLoginForm(AuthenticationForm):
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'password')

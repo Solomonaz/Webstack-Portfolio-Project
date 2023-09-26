@@ -2,31 +2,35 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
-
-
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Account
 from .forms import RegistrationForm
 from django.contrib import messages, auth
 
 
-# @never_cache
 def login_view(request):
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
 
+        # Authenticate user
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            auth.login(request, user)
-
-            return redirect('/')
+            if user.is_active:
+                auth.login(request, user)
+                return redirect('/')
+            else:
+                messages.warning(request, "Your account is not active. Please contact the administrator.")
+                return redirect('login')
         else:
-            messages.error(request, "Invalid login credentials!")
+            messages.warning(request, "Invalid login credentials!")
             return redirect('login')
 
     return render(request, "accounts/login.html")
 
+
+@staff_member_required
 def register_user(request):
     if request.method =='POST':
         form = RegistrationForm(request.POST)
@@ -39,7 +43,6 @@ def register_user(request):
             username = email.split("@")[0]
             role = form.cleaned_data['role']
 
-            # Create the user with the specified role
             user = Account.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,

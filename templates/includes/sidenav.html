@@ -59,10 +59,12 @@
                 <i class="ni ni-single-02"></i>
                 User List
               </a>
+              {% if request.user.role != 'user' %}
               <a class="dropdown-item" href="{% url 'register' %}">
                 <i class="ni ni-fat-add"></i>
                 Add Users
               </a>
+              {% endif %}
             </div>
           </li>
           <div class="dropdown-divider"></div>
@@ -71,3 +73,4 @@
     </div>
   </div>
 </nav>
+

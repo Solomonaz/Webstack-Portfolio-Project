@@ -31,7 +31,6 @@
               </div>
 
               {% if not success %}
-
                 <form method="POST">
 
                   {% csrf_token %}
@@ -132,8 +131,6 @@
                     <button type="submit" class="btn btn-primary mt-4">Create account</button>
                   </div>
                 </form>
-
-              {% endif %}  
   
             </div>
           </div>
@@ -150,6 +147,7 @@
 
     </div>
   </div>
+  {% endif %}
 
 {% endblock content %}
 

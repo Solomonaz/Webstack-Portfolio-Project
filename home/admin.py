@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, TableFile, File, Activity
+from .models import Category, TableFile, File, Activity, RecordActivity
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -13,6 +13,23 @@ class SidenavAdmin(admin.ModelAdmin):
 @admin.register(Activity)
 class RecentFiles(admin.ModelAdmin):
     list_display = ('file_name', 'uploaded_by','modified_by','date_modified','file')
+
+@admin.register(RecordActivity)
+class RecentRecord(admin.ModelAdmin):
+    list_display = ( 
+        'accusor_name',
+        'defendent_name',
+        'house_number',
+        'id_number',
+        'court_house',
+        'debate_type',
+        'date_archive_initiated',
+        'date_court_decision_made',
+        'date_court_decision_copy_sent',
+        'prosecutor',
+        'status'
+          )
+
 
 @admin.register(TableFile)
 class TableFileAdmin(ImportExportModelAdmin):

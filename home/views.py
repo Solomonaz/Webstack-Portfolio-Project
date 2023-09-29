@@ -6,11 +6,9 @@ from django.template import loader
 from django.urls import reverse
 from django.contrib import messages
 from . forms import SidenavForm, TableFileForm, FileForm
-from . models import TableFile, File
+from . models import TableFile, File, Activity, RecordActivity
 from authentication.models import Account
 from authentication.forms import RegistrationForm
-from .models import Activity
-from django.contrib.admin.views.decorators import staff_member_required
 from tablib import Dataset
 from . resources import TableFileResource
 import datetime
@@ -20,8 +18,7 @@ from django.db import IntegrityError
 
 
 @login_required(login_url="/login/")
-def index(request):
-   
+def index(request): 
     pdf_count = File.objects.filter(file__icontains='.pdf').count()
     excel_count = File.objects.filter(file__icontains='.xlsx').count()
     video_count = File.objects.filter(file__icontains='.mp4').count()
@@ -38,12 +35,11 @@ def index(request):
         File.objects.filter(file__icontains='.jpg').count()
     )
 
-
-
     total_count = (
         pdf_count + excel_count + video_count + audio_count + image_count + word_count + ppt_count
     )
     recent_files = Activity.objects.all()
+    recent_records = RecordActivity.objects.all()
     context = {
         'segment': 'index', 
         'pdf_count':pdf_count,
@@ -55,11 +51,11 @@ def index(request):
         'total_count':total_count,
         'ppt_count': ppt_count,
         'recent_files':recent_files,
+        'recent_records':recent_records,
         }
 
     html_template = loader.get_template('index.html')
     return HttpResponse(html_template.render(context, request))
-
 
 @login_required(login_url="/login/")
 def pages(request):
@@ -112,6 +108,7 @@ def sidenav(request):
     }
     return render (request,'includes/sidenav.html', context)
 
+@login_required
 def create_file(request):
     if request.method == 'POST':
         form_file = FileForm(request.POST, request.FILES)
@@ -136,6 +133,8 @@ def create_file(request):
     }
     return render(request, 'pages/file.html', context)
 
+
+@login_required
 def file_list(request):
     files = File.objects.all()
     files_count = files.count()
@@ -150,6 +149,7 @@ def file_list(request):
         }
     return render(request, 'pages/file-list.html', context)
 
+@login_required
 def edit_file(request, pk):
     record_edit_model = File.objects.get(id=pk)
     form_file = FileForm(request.POST or None, instance=record_edit_model)
@@ -161,7 +161,10 @@ def edit_file(request, pk):
                 action=f'File {record_edit_model.file_name} Edited',
                 uploaded_by=record_edit_model.uploaded_by,
                 file=record_edit_model.file,
+                file_size = record_edit_model.file_size,
+                date_created = record_edit_model.date_created,
                 modified_by=request.user.username,
+                edited_or_deleted = 'Edited'
             )
             activity.save()
             form_file.save()
@@ -173,22 +176,72 @@ def edit_file(request, pk):
     }
     return render(request, 'pages/edit-file.html', context)
 
-
+@login_required
 def delete_file(request, pk):
     data_removed = File.objects.get(id=pk)
-
     activity = Activity(
         file_name = data_removed.file_name,
-        action = f'file {data_removed.file_name} removed ',
+        file_size = data_removed.file_size,
+        date_created = data_removed.date_created,
         uploaded_by = data_removed.uploaded_by,
         file = data_removed.file,
         modified_by = request.user.username,
+        edited_or_deleted = 'Deleted'
         )
     activity.save()
 
     data_removed.delete()
     messages.success(request, 'File removed!')
     return redirect('file_list')
+
+@login_required
+def clear_activity(request, pk):
+    files_tobe_cleared = get_object_or_404(Activity, id = pk)
+    files_tobe_cleared.delete()
+    messages.success(request, f'You have cleared {files_tobe_cleared.file_name}')
+    return redirect('/')
+
+
+@login_required
+def restore_deleted_file(request, pk):
+    activity_file = get_object_or_404(Activity, id=pk)
+
+    restored_file = File(
+        file_name=activity_file.file_name,
+        uploaded_by = activity_file.uploaded_by,
+        file = activity_file.file,
+        file_size = activity_file.file_size,
+        date_created = activity_file.date_created
+    )
+    restored_file.save()
+    activity_file.delete()
+
+    messages.success(request, f'File "{activity_file.file_name}" has been restored.')
+    return redirect('/')
+
+@login_required
+def restore_deleted_records(request, pk):
+    activity_file = get_object_or_404(RecordActivity, id=pk)
+
+    restored_record = TableFile(
+        accusor_name=activity_file.accusor_name,
+        defendent_name=activity_file.defendent_name,
+        house_number=activity_file.house_number,
+        id_number=activity_file.id_number,
+        court_house=activity_file.court_house,
+        debate_type=activity_file.debate_type,
+        date_archive_initiated=activity_file.date_archive_initiated,
+        date_court_decision_made=activity_file.date_court_decision_made,
+        date_court_decision_copy_sent=activity_file.date_court_decision_copy_sent,
+        prosecutor=activity_file.prosecutor,
+        status=activity_file.status,
+    )
+    restored_record.save()
+    activity_file.delete()
+
+    messages.success(request, f'File "{activity_file.file_name}" has been restored.')
+    return redirect('/')
+
 
 
 @login_required(login_url="/login/")
@@ -284,6 +337,22 @@ def record(request):
 
 def remove_data(request, pk):
     data_removed = TableFile.objects.get(id=pk)
+    record_activity = RecordActivity(
+        accusor_name=data_removed.accusor_name,
+        defendent_name=data_removed.defendent_name,
+        house_number=data_removed.house_number,
+        id_number=data_removed.id_number,
+        court_house=data_removed.court_house,
+        debate_type=data_removed.debate_type,
+        date_archive_initiated=data_removed.date_archive_initiated,
+        date_court_decision_made=data_removed.date_court_decision_made,
+        date_court_decision_copy_sent=data_removed.date_court_decision_copy_sent,
+        prosecutor=data_removed.prosecutor,
+        status=data_removed.status,
+        edited_or_deleted='Deleted',
+        modified_by=request.user.username,
+    )
+    record_activity.save()
     data_removed.delete()
     return redirect('records')
 
@@ -291,6 +360,22 @@ def edit_data(request, pk):
     record_edit_model = TableFile.objects.get(id=pk)
     record_edit_form = TableFileForm(request.POST or None, instance=record_edit_model)
     if record_edit_form.is_valid():
+        activity = RecordActivity(
+            accusor_name=record_edit_model.accusor_name,
+            defendent_name=record_edit_model.defendent_name,
+            house_number=record_edit_model.house_number,
+            id_number=record_edit_model.id_number,
+            court_house=record_edit_model.court_house,
+            debate_type=record_edit_model.debate_type,
+            date_archive_initiated=record_edit_model.date_archive_initiated,
+            date_court_decision_made=record_edit_model.date_court_decision_made,
+            date_court_decision_copy_sent=record_edit_model.date_court_decision_copy_sent,
+            prosecutor=record_edit_model.prosecutor,
+            status=record_edit_model.status,
+            edited_or_deleted='Edited',
+            modified_by=request.user.username,
+        )
+        activity.save()
         record_edit_form.save()
         messages.success(request, ' You have updated a record.')
         return redirect('records')
@@ -299,8 +384,13 @@ def edit_data(request, pk):
         'form':record_edit_form
     }
     return render(request, 'pages/edit.html', context)
+@login_required
+def clear_recent_record(request, pk):
+    clear_record_activity = get_object_or_404(RecordActivity, id=pk)
+    clear_record_activity.delete()
+    return redirect('/')
 
-
+@login_required
 def manage_user(request):
     accounts = Account.objects.all()
     context = {
@@ -311,12 +401,17 @@ def manage_user(request):
 @login_required
 def remove_user(request, pk):
     user_removed = Account.objects.get(id=pk)
-    if request.user != user_removed and request.user.role !='admin':
+
+    if request.user == user_removed:
+        messages.warning(request, "You cannot delete your own account")
+        return redirect('manage_user')
+
+    if request.user.role != 'admin':
         messages.warning(request, "You don't have the right permission to remove this user")
         return redirect('manage_user')
     
     user_removed.delete()
-    messages.success(request, 'File removed!')
+    messages.success(request, 'User removed!')
     return redirect('manage_user')
 
 @login_required
@@ -324,7 +419,7 @@ def edit_user(request, pk):
     record_edit_model = get_object_or_404(Account, id=pk)
 
     if request.user != record_edit_model and request.user.role !='admin':
-        messages.success(request, "You don't have the right permission to edit user")
+        messages.warning(request, "You don't have the right permission to edit user")
         return redirect('manage_user')
 
     if request.method == 'POST':

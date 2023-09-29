@@ -40,6 +40,13 @@ urlpatterns = [
     path('image/', views.show_files_by_type, {'file_type': 'image'}, name='show_image_files'),
     path('ppt/', views.show_files_by_type, {'file_type': 'ppt'}, name='show_ppt_files'),
 
+    path('clear_activity/<int:pk>/', views.clear_activity, name='clear_activity'),
+    path('clear_recent_record/<int:pk>/', views.clear_recent_record, name='clear_recent_record'),
+    path('restore_deleted_file/<int:pk>/', views.restore_deleted_file, name='restore_deleted_file'),
+    path('restore_deleted_records/<int:pk>/', views.restore_deleted_records, name='restore_deleted_records'),
+
+    
+
 
 
 

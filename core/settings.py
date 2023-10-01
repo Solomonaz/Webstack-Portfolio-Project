@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'home',
     'authentication',
     'import_export',
+    'chat',
 ]
 
 MIDDLEWARE = [

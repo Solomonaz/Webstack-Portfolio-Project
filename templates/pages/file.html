@@ -7,31 +7,31 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card">
-        <h5 class="card-header ">Create File
-            <a href="/" class="btn btn-primary btn-sm" style="float: right;">Home</a>
-        </h5>
-        <div class="card-body">
-            <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label for="fileName" class="form-label">File Name:</label>
-                  {{form_file.file_name}}
-                </div>
-                <div class="mb-3">
-                  <label for="uploadedby" class="form-label">Uploaded By:</label>
-                  {{form_file.uploaded_by}}
-                </div>
-                <div class="mb-3">
-                  <label for="uploadedby" class="form-label">Choose file</label>
-                  {{form_file.file}}
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-              </form>
-       </div>
+  <div class="card">
+    <h5 class="card-header ">Create File
+      <a href="/" class="btn btn-primary btn-sm" style="float: right;">Home</a>
+    </h5>
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="fileName" class="form-label">File Name:</label>
+          {{form_file.file_name}}
+        </div>
+        <div class="mb-3">
+          <label for="uploadedby" class="form-label">Uploaded By:</label>
+          {{form_file.uploaded_by}}
+        </div>
+        <div class="mb-3">
+          <label for="uploadedby" class="form-label">Choose file</label>
+          {{form_file.file}}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock content %}
 {% block javascripts %}

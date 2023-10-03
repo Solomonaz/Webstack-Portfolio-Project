@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
-from authentication.views import login_view, logout_view, register_user, profile
+
 urlpatterns = [
-    path('chat', views.index, name='index'),
+    path('chat/', views.index, name='index'),
+    # path('direct-message/<int:user_id>/', views.direct_message_detail, name='direct_message_detail'),
+    path('direct_message/', views.direct_message_detail, name='direct_message_detail'),
+
 ]

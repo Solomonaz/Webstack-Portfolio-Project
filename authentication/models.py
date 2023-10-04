@@ -55,15 +55,24 @@ class Account(AbstractBaseUser):
     email           =models.EmailField(max_length=50, unique=True)
     phone_number    =models.CharField(max_length=50)
     role           =models.CharField(max_length=20, choices=ROLES, default='admin')
+    status = models.CharField(max_length=20, choices=[('active', 'Active'), ('inactive', 'Inactive')],
+                             default='inactive')
 
     # required fields
 
+    if status == 'active':
+        is_active = True
+        is_staff = True
+    if role == 'admin':
+        is_admin = True
+        
     date_joined     =models.DateField(auto_now_add=True)
     last_login      =models.DateField(auto_now_add=True)
     is_admin        =models.BooleanField(default=False)
     is_staff        =models.BooleanField(default=False)
     is_active        =models.BooleanField(default=False)
     is_superadmin        =models.BooleanField(default=False)
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','first_name', 'last_name','phone_number']

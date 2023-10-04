@@ -29,10 +29,9 @@ def login_view(request):
 
     return render(request, "accounts/login.html")
 
-
 @staff_member_required
 def register_user(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -42,7 +41,9 @@ def register_user(request):
             password = form.cleaned_data['password']
             username = email.split("@")[0]
             role = form.cleaned_data['role']
+            status = form.cleaned_data['status']
 
+            # Create the user without setting is_admin initially
             user = Account.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
@@ -50,17 +51,32 @@ def register_user(request):
                 username=username,
                 password=password,
                 phone_number=phone_number,
-                role=role 
+                role=role,
             )
+
+            # Check the selected role and set attributes accordingly
+            if role == 'admin':
+                user.is_admin = True
+                user.is_staff = True  # Assuming admin users should also have staff access
+
+            # Check the selected status and set is_active accordingly
+            if status == 'active':
+                user.is_active = True
+            elif status == 'inactive':
+                user.is_active = False
+
+            user.save()
 
             messages.success(request, "Successfully registered!")
             return redirect('manage_user')
     else:
         form = RegistrationForm()
+
     context = {
         'form': form,
     }
     return render(request, 'pages/add-user.html', context)
+
 
 
 @login_required

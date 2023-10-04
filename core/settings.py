@@ -74,7 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'home.context_processors.getsidenav',
-                'chat.context_processors.message_context'
+                # 'chat.context_processors.message_context'
             ],
         },
     },

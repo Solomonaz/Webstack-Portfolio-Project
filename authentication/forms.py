@@ -1,9 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from .models import Account
-
-
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -34,10 +30,14 @@ class RegistrationForm(forms.ModelForm):
         'placeholder': 'Select Role',
         'class': 'form-control'
     }))
-
+    status = forms.ChoiceField(choices=[('active', 'Active'), ('inactive', 'Inactive')],
+                              widget=forms.Select(attrs={
+                                  'placeholder': 'Select Status',
+                                  'class': 'form-control'
+                              }))
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password', 'role']
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password', 'role','status']
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)

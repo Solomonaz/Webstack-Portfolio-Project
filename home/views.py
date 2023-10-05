@@ -8,7 +8,7 @@ from django.contrib import messages
 from . forms import SidenavForm, TableFileForm, FileForm
 from . models import TableFile, File, Activity, RecordActivity
 from authentication.models import Account
-from authentication.forms import RegistrationForm
+from authentication.forms import RegistrationForm, EditProfileForm
 from tablib import Dataset
 from . resources import TableFileResource
 import datetime
@@ -418,19 +418,18 @@ def remove_user(request, pk):
 def edit_user(request, pk):
     record_edit_model = get_object_or_404(Account, id=pk)
 
-    if request.user != record_edit_model and request.user.role !='admin':
-        messages.warning(request, "You don't have the right permission to edit user")
+    if request.user != record_edit_model and request.user.role != 'admin':
+        messages.warning(request, "You don't have the right permission to edit this user.")
         return redirect('manage_user')
 
     if request.method == 'POST':
-        record_edit_form = RegistrationForm(request.POST, instance=record_edit_model)
+        record_edit_form = EditProfileForm(request.POST, request.FILES, instance=record_edit_model)
         if record_edit_form.is_valid():
             record_edit_form.save()
-            messages.success(request, 'You have updated your profile.')
+            messages.success(request, 'User profile updated successfully.')
             return redirect('manage_user')
-
     else:
-        record_edit_form = RegistrationForm(instance=record_edit_model)
+        record_edit_form = EditProfileForm(instance=record_edit_model)
 
     context = {
         'form': record_edit_form,

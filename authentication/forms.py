@@ -30,14 +30,12 @@ class RegistrationForm(forms.ModelForm):
         'placeholder': 'Select Role',
         'class': 'form-control'
     }))
-    status = forms.ChoiceField(choices=[('active', 'Active'), ('inactive', 'Inactive')],
-                              widget=forms.Select(attrs={
-                                  'placeholder': 'Select Status',
-                                  'class': 'form-control'
-                              }))
+    profile_picture = forms.ImageField(required=False,widget=forms.FileInput(attrs={
+        'class': 'form-control-file'}),
+)
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password', 'role','status']
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password', 'role','profile_picture']
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
@@ -57,3 +55,43 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Password does not match!"
             )
+
+
+class EditProfileForm(forms.ModelForm):
+    first_name = forms.CharField(
+    widget=forms.TextInput(
+        attrs={
+            "placeholder": "First Name",
+            "class": "form-control"
+        }
+    ))
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "First Name",
+                "class": "form-control"
+            }
+        ))
+    phone_number = forms.CharField(
+    widget=forms.TextInput(
+        attrs={
+            "placeholder": "First Name",
+            "class": "form-control"
+        }
+    ))
+    email = forms.CharField(
+     widget=forms.TextInput(
+        attrs={
+            "placeholder": "First Name",
+            "class": "form-control"
+        }
+    ))
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            "class": "form-control-file",
+        })
+    )
+    class Meta:
+        model = Account
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'profile_picture']

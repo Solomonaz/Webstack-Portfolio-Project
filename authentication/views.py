@@ -6,6 +6,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Account
 from .forms import RegistrationForm
 from django.contrib import messages, auth
+from django.core.exceptions import ValidationError
+from django.utils.datastructures import MultiValueDictKeyError
+
 
 
 def login_view(request):
@@ -32,43 +35,39 @@ def login_view(request):
 @staff_member_required
 def register_user(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            phone_number = form.cleaned_data['phone_number']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            username = email.split("@")[0]
-            role = form.cleaned_data['role']
-            status = form.cleaned_data['status']
+        form = RegistrationForm(request.POST, request.FILES)
+        try:
+            if form.is_valid():
+                first_name = form.cleaned_data['first_name']
+                last_name = form.cleaned_data['last_name']
+                phone_number = form.cleaned_data['phone_number']
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                username = email.split("@")[0]
+                role = form.cleaned_data['role']
+                profile_picture = form.cleaned_data['profile_picture']
 
-            # Create the user without setting is_admin initially
-            user = Account.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                username=username,
-                password=password,
-                phone_number=phone_number,
-                role=role,
-            )
+                user = Account.objects.create_user(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    username=username,
+                    password=password,
+                    phone_number=phone_number,
+                    role=role,
+                    profile_picture=profile_picture,
+                )
 
-            # Check the selected role and set attributes accordingly
-            if role == 'admin':
-                user.is_admin = True
-                user.is_staff = True  # Assuming admin users should also have staff access
+                if role == 'admin':
+                    user.is_admin = True
+                    user.is_staff = True 
 
-            # Check the selected status and set is_active accordingly
-            if status == 'active':
-                user.is_active = True
-            elif status == 'inactive':
-                user.is_active = False
+                user.save()
 
-            user.save()
-
-            messages.success(request, "Successfully registered!")
-            return redirect('manage_user')
+                messages.success(request, "Successfully registered!")
+                return redirect('manage_user')
+        except (MultiValueDictKeyError, ValidationError):
+            pass
     else:
         form = RegistrationForm()
 
@@ -76,6 +75,7 @@ def register_user(request):
         'form': form,
     }
     return render(request, 'pages/add-user.html', context)
+
 
 
 
@@ -87,6 +87,7 @@ def profile(request):
     full_name = user.full_name
     phone_number = user.phone_number
     role = user.role
+    profile_picture = user.profile_picture
 
     context = {
         'user': user,
@@ -95,6 +96,7 @@ def profile(request):
         'full_name':full_name,
         'phone_number':phone_number,
         'role':role,
+        'profile_picture':profile_picture.url,
 
     }
 

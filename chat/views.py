@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from authentication.models import Account
-from django.shortcuts import  get_object_or_404
+from django.shortcuts import get_object_or_404
 from .forms import MessageForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -17,20 +17,19 @@ def index(request):
     messages = Message.objects.filter(
         (Q(sender=request.user, receiver=receiver) | Q(sender=receiver, receiver=request.user))
     ).order_by('timestamp')
-    print(messages)
+    
     if request.method == 'POST':
         message_form = MessageForm(request.POST)
-        print('before submission')
         if message_form.is_valid():
             message = message_form.save(commit=False)
             message.sender = request.user
             message.receiver = receiver
             message.save()
-            return redirect('index')
+            return redirect('chat:index')  # Adjust the namespace and URL name if needed
+    
     else:
         message_form = MessageForm()
-        print("Form errors:", message_form.errors)
-
+    
     context = {
         'users': users,
         'message_data': message_data,
@@ -40,6 +39,11 @@ def index(request):
     }
     
     return render(request, 'chat/index.html', context)
+
+
+def chat_room(request, room_name):
+    return render(request, 'chat.html', {'room_name': room_name})
+
 
 
 

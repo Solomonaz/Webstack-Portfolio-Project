@@ -59,12 +59,7 @@
           <form method="POST" action="{% url 'chat:index' %}">
             {% csrf_token %}
             <div class="mb-3">
-              {{ message_form.content }}
-              {% if message_form.content.errors %}
-                <div class="text-danger">
-                  {{ message_form.content.errors.0 }}
-                </div>
-              {% endif %}
+              <input type="text" class="form-control" name="content">
             </div>
             <button type="submit" class="btn btn-primary">Send</button>
           </form>  

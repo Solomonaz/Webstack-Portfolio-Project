@@ -7,9 +7,9 @@ class MessageForm(forms.ModelForm):
         fields = '__all__'
 
     content = forms.CharField(
-    widget=forms.TextInput(
-        attrs={
-            "placeholder": "Type your message...",
-            "class": "form-control"
-        }
-    ))
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Type your message...",
+                "class": "form-control"
+            }
+        ))
